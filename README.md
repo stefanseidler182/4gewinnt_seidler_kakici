@@ -1,4 +1,4 @@
-# Vier gewinnt von Stefan Seidler und Sukrü Kakici 
+# Vier gewinnt von Stefan Seidler und Sükrü Kakici 
 ## Folgende Tutorials helfen bei der Erstellung des Spiels:
 https://www.youtube.com/watch?v=9F1FKpwbnl0
 https://www.youtube.com/watch?v=dCLFA-eHDg0
