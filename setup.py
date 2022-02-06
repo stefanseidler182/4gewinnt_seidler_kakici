@@ -9,7 +9,7 @@ setup(
     description='4gewinnt-Spiel',
     author='Stefan Seidler und Sükrü Kakici',
     author_email='s50862@edu.campus02.at',
-    url='https://github.com/stefanseidler182/4gewinnt_seidler_kakici',
+    url='https://github.com/stefanseidler182/viergewinnt',
     packages=find_packages(exclude=('tests', 'docs')),
     python_requires='>=3.8'
 )
