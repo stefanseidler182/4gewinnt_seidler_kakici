@@ -176,11 +176,10 @@ if __name__ == '__main__':
     '''
     while True:
         print(spielfeld)
-        print(spalte, zeile)
         if spieler:
             win = human(spieler)
         else:
             win = computer(spieler)
         if win:
-        spieler = not spieler
+            spieler = not spieler
 
