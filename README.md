@@ -18,3 +18,5 @@ https://www.youtube.com/watch?v=dCLFA-eHDg0
 https://www.youtube.com/watch?v=pxKu2pQ7ILo
 ### Sphinx Dokumentation
 Screencast von Christian Hofer im Rahmen der LV
+### Design Patterns
+https://refactoring.guru/design-patterns/
