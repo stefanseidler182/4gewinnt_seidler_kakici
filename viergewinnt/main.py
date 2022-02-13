@@ -6,14 +6,15 @@ from random import randint
 ZEILEN = 6
 ZELLEN = SPALTEN * ZEILEN
 # Die Richtungen dienen dazu, zu überprüfen, ob ein Spieler (in eine bestimmte Richtung) gewonnen hat.
-RICHTUNGEN = [(-1, -1), (0, -1), (1, -1), (-1, 0), (1, 0), (-1, 1), (0, 1), (1, 1)]
+
 # pos2Index geben wir eine Position(Key-Spalte, Zeile) und für diese Position vergeben wir einen
 # Value (Index der betroffenen Quads)
 pos2Index = defaultdict(list)
 """
 
 ZAEHLER = 0
-
+REIHE = 5
+RICHTUNGEN = [(-1, -1), (0, -1), (1, -1), (-1, 0), (1, 0), (-1, 1), (0, 1), (1, 1)]
 
 class Spielfeld:
     def __init__(self):
@@ -22,21 +23,22 @@ class Spielfeld:
                          [".", ".", ".", ".", ".", ".", "."],
                          [".", ".", ".", ".", ".", ".", "."],
                          [".", ".", ".", ".", ".", ".", "."],
-                         [".", ".", ".", ".", ".", ".", "."], ]
+                         [".", ".", ".", ".", ".", ".", "."],
+                         [".", ".", ".", ".", ".", ".", "."]]
         self.__letzteSpalte = None
         self.__letzteReihe = None
 
     def getFelder(self) -> List:
-        return self.__fields
+        return self.__felder
 
-    def setFelder(self, col: int):
+    def setFelder(self, spalte: int):
+        global REIHE
         self.__letzteSpalte = spalte
 
         gueltige_spalten = [1, 2, 3, 4, 5, 6, 7]
         if spalte not in gueltige_spalten:
             raise ValueError("Wähle eine Spalte von 1 - 7")
 
-        reihe = 5
         geworfen = False
         for liste in reversed(self.__felder):
             if not geworfen:
@@ -45,11 +47,11 @@ class Spielfeld:
                         liste[spalte] = 'X'
                     else:
                         liste[spalte] = '0'
-                    self.__letzteReihe = reihe
+                    self.__letzteReihe = REIHE
                     geworfen = True
                 elif liste[spalte] != ".":
-                    reihe -= 1
-                    self.__letzteReihe = reihe
+                    REIHE -= 1
+                    self.__letzteReihe = REIHE
 
     def getLetzteReihe(self) -> int:
         return self.__letzteReihe
@@ -60,8 +62,10 @@ class Spielfeld:
 
 class GUI:
 
+    def __init__(self):
+        pass
+
     def printSpielfeld(self, feld: Spielfeld):
-        """Gibt das Spielfeld aus"""
         for liste in feld.getFelder():
             print(liste[0], liste[1], liste[2], liste[3], liste[4], liste[5])
 
@@ -73,7 +77,7 @@ class GUI:
             if spielmodus not in gueltigeModi:
                 print(f'FALSCHE EINGABE! Willst du gegen einen Menschen (1) oder einen Computer (2) spielen?')
                 continue
-        return int(spielmodus)
+        return spielmodus
 
     def erfasseSpielzug(self):
         global ZAEHLER
@@ -93,8 +97,8 @@ class Spielmodus:
         if spielmodus == 1 or spielmodus == 2:
             self.__spielmodus = spielmodus
         else:
-            raise ValueError(
-                "Falsche Eingabe! Gib 1 ein, wenn du gegen einen Mensch spielen willst oder 2, wenn du gegen einen Computergegner spielen willst.")
+            raise ValueError("Falsche Eingabe! Gib 1 ein, wenn du gegen einen Mensch spielen willst oder 2,"
+                             "wenn du gegen einen Computergegner spielen willst.")
 
     def __repr__(self):
         return f"Spielmodus: {self.__spielmodus}"
@@ -107,7 +111,7 @@ class Spielmodus:
     def spielmodus(self, value):
         self.__spielmodus = value
 
-    def playDraw(self, gui: GUI) -> int:
+    def spielzug(self, gui: GUI) -> int:
         if self.__spielmodus == 1:
             spalte = gui.erfasseSpielzug()
             return spalte
@@ -129,22 +133,27 @@ class Spielregeln:
             return True
 
     def voll(self) -> bool:
-        """
-        Überprüft, ob das Spielfeld voll ist.
-        Solange noch freie Felder am Spielfeld sind, wird False geliefert. Ist das Spielfeld voll wird True geliefert.
-        Parameters
-        ----------
-        field: Field
-            Das übergebene Spielfeld wird überprüft.
-        Returns
-        -------
-        True oder False.
-        """
         if ZAEHLER < 42:
             return False
         else:
             return True
 
+    def gewonnen(self, feld: Spielfeld) -> bool:
+        spielfeld = feld.getFelder()
+        stein = 'O' if ZAEHLER % 2 == 0 else 'X'
+        zeile = feld.getLetzteReihe()
+        spalte = feld.getLetzteSpalte()
+        for richtung in RICHTUNGEN:
+            vier_in_einer_reihe = True
+            for i in range(4):
+                delta_spalte, delta_zeile = richtung
+                p1 = (spalte + delta_spalte * i, zeile + delta_zeile * i)
+                if p1 in spielfeld and spielfeld[p1] == stein:
+                    continue
+                vier_in_einer_reihe = False
+                break
+            if vier_in_einer_reihe:
+                return True
 
 class DasSpiel:
     """
@@ -155,56 +164,51 @@ class DasSpiel:
         self.__feld = Spielfeld()
         self.__gui = GUI()
         self.__spielregeln = Spielregeln()
+        self.spieler1 = Spielmodus(2)
+        self.spieler2 = Spielmodus(2)
 
     def spielStart(self):
         spielmodus_spieler1 = self.__gui.getSpielmodus()
+        self.spieler1.spielmodus = spielmodus_spieler1
         spielmodus_spieler2 = self.__gui.getSpielmodus()
-        self.__spieler1.spielmodus = spielmodus_spieler1
-        self.__spieler2.spielmodus = spielmodus_spieler2
-        zeichen_spieler1 = 'X'
-        zeichen_spieler2 = '0'
+        self.spieler2.spielmodus = spielmodus_spieler2
         self.__winner = None
-
-    def startGame(self):
-        spieler = True
         self.__gui.printSpielfeld(self.__feld)
         while True:
-            check_draw_player1 = False
-            draw_player_1 = None
-            while not check_draw_player1:
-                draw_player_1 = self.__player1.playDraw(self.__gui)
-                check_draw_player1 = self.__ruleset.checkDraw(self.__feld, draw_player_1)
+            ueberpruefe_spielzug_spieler1 = False
+            spielzug_spieler_1 = None
+            while not ueberpruefe_spielzug_spieler1:
+                spielzug_spieler_1 = self.spieler1.spielzug(self.__gui)
+                ueberpruefe_spielzug_spieler1 = self.__spielregeln.volleSpalte(self.__feld, spielzug_spieler_1)
 
-            self.__feld.setFields(draw_player_1, self.__player1.playerid)
-            self.__gui.outputField(self.__feld)
-            if self.__ruleset.checkGameOver(self.__feld):
-                print("Das Spielfeld ist voll. Das Spiel ist vorbei")
+            self.__feld.setFelder(spielzug_spieler_1)
+            self.__gui.printSpielfeld(self.__feld)
+            if self.__spielregeln.voll():
+                print("Das Spielfeld ist voll. UNENTSCHIEDEN!")
                 break
-            if self.__ruleset.checkPlayerWon(self.__feld, self.__player1):
-                print(f"Herzlichen Glückwunsch {self.__player1.name}. Gut gespielt! :)")
+            if self.__spielregeln.gewonnen(self.__feld):
+                print("Spieler 1 hat gewonnen!")
                 break
 
-            check_draw_player2 = False
-            draw_player_2 = None
-            while not check_draw_player2:
-                draw_player_2 = self.__player2.playDraw(self.__gui)
-                # print(draw_player_2)
-                check_draw_player2 = self.__ruleset.checkDraw(self.__feld, draw_player_2)
+            ueberpruefe_spielzug_spieler2 = False
+            spielzug_spieler_2 = None
+            while not ueberpruefe_spielzug_spieler2:
+                spielzug_spieler_2 = self.spieler2.spielzug(self.__gui)
+                ueberpruefe_spielzug_spieler2 = self.__spielregeln.volleSpalte(self.__feld, spielzug_spieler_2)
 
-            self.__feld.setFields(draw_player_2, self.__player2.playerid)
-            self.__gui.outputField(self.__feld)
-            if self.__ruleset.checkGameOver(self.__feld):
-                print("Das Spielfeld ist voll. Das Spiel ist vorbei")
+            self.__feld.setFelder(spielzug_spieler_2)
+            self.__gui.printSpielfeld(self.__feld)
+            if self.__spielregeln.voll():
+                print("Das Spielfeld ist voll. UNENTSCHIEDEN!")
                 break
-            if self.__ruleset.checkPlayerWon(self.__feld, self.__player2):
-                print(f"Herzlichen Glückwunsch {self.__player2.name}. Gut gespielt! :)")
+            if self.__spielregeln.gewonnen(self.__feld):
+                print("Spieler 2 hat gewonnen!")
                 break
 
 
 if __name__ == '__main__':
     game = DasSpiel()
     game.spielStart()
-    game.startGame()
 
 
 class Ki:
