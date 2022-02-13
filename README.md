@@ -1,6 +1,6 @@
 # Vier gewinnt von Stefan Seidler und Sükrü Kakici
 
-## Vier gewinnt
+## Regeln
 Wenn ein Spieler einen Spielstein (in diesem Fall das Symbol X oder O) in eine Spalte fallen lässt, besetzt dieser den untersten freien Platz der Spalte. Gewinner ist der Spieler, der es als erster schafft, vier oder mehr seiner Spielsteine waagerecht, senkrecht oder diagonal in eine Linie zu bringen. Das Spiel endet unentschieden, wenn das Spielbrett komplett gefüllt ist, ohne dass ein Spieler eine Viererlinie gebildet hat. 
 
 ## Zur Umsetzung
