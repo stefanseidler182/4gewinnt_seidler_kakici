@@ -1,0 +1,8 @@
+README.md
+setup.py
+4gewinnt.egg-info/PKG-INFO
+4gewinnt.egg-info/SOURCES.txt
+4gewinnt.egg-info/dependency_links.txt
+4gewinnt.egg-info/top_level.txt
+viergewinnt/__init__.py
+viergewinnt/main.py
