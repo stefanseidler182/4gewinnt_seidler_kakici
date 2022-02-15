@@ -1,7 +1,7 @@
 # Vier gewinnt von Stefan Seidler und Sükrü Kakici
 
 ## Regeln
-Wenn ein Spieler einen Spielstein (in diesem Fall das Symbol X oder O) in eine Spalte fallen lässt, besetzt dieser den untersten freien Platz der Spalte. Gewinner ist der Spieler, der es als erster schafft, vier oder mehr seiner Spielsteine waagerecht, senkrecht oder diagonal in eine Linie zu bringen. Das Spiel endet unentschieden, wenn das Spielbrett komplett gefüllt ist, ohne dass ein Spieler eine Viererlinie gebildet hat. 
+Wenn ein Spieler einen Spielstein (in unserem Fall das Symbol X oder O) in eine Spalte fallen lässt, besetzt dieser den untersten freien Platz der Spalte. Gewinner ist der Spieler, der es als erster schafft, vier oder mehr seiner Spielsteine waagerecht, senkrecht oder diagonal in eine Linie zu bringen. Das Spiel endet unentschieden, wenn das Spielbrett komplett gefüllt ist, ohne dass ein Spieler eine Viererlinie gebildet hat. 
 
 ## Zur Umsetzung
 Der Code sowie das Modell zur Umsetzung selbst wurde aufgrund der Lehrveranstaltung Softwareentwicklungsmodelle an der FH Campus02 erstellt. Es dient als Abschlussprojekt.
@@ -14,9 +14,8 @@ Um das Spiel zu starten, wird der Code einfach in einem Python-Editor, z.B. PyCh
 https://www.youtube.com/watch?v=9F1FKpwbnl0
 
 https://www.youtube.com/watch?v=dCLFA-eHDg0
-### Visualisierung mit Turtle Package
-https://www.youtube.com/watch?v=pxKu2pQ7ILo
 ### Sphinx Dokumentation
-Screencast von Christian Hofer im Rahmen der LV
+Es gibt zusätzlich zur Dokumentation im Code auch eine zusätzliche Dokumentation.
+Die Anleitung dieser Dokumentation ist in einem Screencast von Christian Hofer im Rahmen der LV Softwareentwicklungsmodelle
 ### Design Patterns
 https://refactoring.guru/design-patterns/
