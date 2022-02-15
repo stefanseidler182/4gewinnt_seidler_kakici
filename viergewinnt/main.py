@@ -210,6 +210,13 @@ class Spielregeln:
     def gewonnen(self, feld: Spielfeld) -> bool:
         """
         Die Funktion überprüft ob einer der Spieler das Spiel gewonnen hat.
+        Die Funktion ruft das Spielfeld sowie die Zeile und Spalte des zuletzt geworfenen
+        Spielsteins ab. Die erste Schleife überprüft in alle 8 Richtungen. Die if Bedingungen
+        überprüfen ob 4 Steine im Array bzw im Spielfeld sind. Die zweite Schleife überprüft
+        überprüft jeweils die Steine. Wenn der erste Stein gespielt ist, überprüft die Schleife
+        den zweiten gesetzten Stein. Danach den dritten und vierten Stein. Wenn der vierte Stein
+        True ist bricht man aus der Schleife raus und man bekommt den return Wert True.
+
         """
         spielfeld = feld.getFelder()
         zeile = feld.getLetzteReihe()
@@ -236,6 +243,8 @@ class Spielregeln:
 class DasSpiel:
     """
     Erstellt das Spiel.
+    In der init Funktion wird das Spielfeld, das GUI, die Spielregeln sowie die Spielmodi
+    initialisiert. Die spiel
     """
 
     def __init__(self):
