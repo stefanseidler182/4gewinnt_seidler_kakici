@@ -19,6 +19,10 @@ SPIELER = 0
 
 
 class Spielfeld:
+    '''
+    Die Klasse Spielfeld umfasst alle Informationen bezüglich dem Spielfeld
+    Das Spielfeld selbst ist ein Array --> 6 Listen bestehend aus 7 strings
+    '''
     def __init__(self):
         self.__felder = [[".", ".", ".", ".", ".", ".", "."],
                          [".", ".", ".", ".", ".", ".", "."],
@@ -30,9 +34,20 @@ class Spielfeld:
         self.__letzteReihe = None
 
     def getFelder(self) -> List:
+    '''
+    übermittelt das Spielfeld
+    '''
         return self.__felder
 
     def setFelder(self, spalte: int):
+    '''
+    Setzt Spielstein in die jeweilige Spalte
+    Ziel der Funktion ist es, dass der gespielte Stein bis zum
+    letztmöglichen Punkt fällt, und nicht z.B. in der ersten Zeile hängen bleibt.
+    ________________________________________
+
+    spalte: int --> Gibt die Spalte die vom Spieler ausgewöhlt wurde um den Stein zu setzen
+    '''
         global REIHE, ZAEHLER
         self.__letzteSpalte = spalte
         geworfen = False
@@ -53,24 +68,42 @@ class Spielfeld:
                     self.__letzteReihe = REIHE
 
     def getLetzteReihe(self) -> int:
+    '''
+    Gibt jene Reihe an, die zuletzt im Spiel bespielt wurde
+    Die Zählung fängt bei 0 von der obersten Reihe an
+    '''
         return self.__letzteReihe
 
     def getLetzteSpalte(self) -> int:
+    '''
+    Gibt jene Spalte an, die zuletzt im Spiel bespielt wurde
+    Die Zählung fängt bei 0 von links an
+    '''
         return self.__letzteSpalte
 
 
 class GUI:
     """
-
+    Die Klasse GUI umfasst alle Informationen bezüglich dem
+    Graphical User Interface
     """
     def __init__(self):
         pass
 
     def printSpielfeld(self, feld: Spielfeld):
+        '''
+        Gibt das Spielfeld aus
+        '''
         for liste in feld.getFelder():
             print(liste[0], liste[1], liste[2], liste[3], liste[4], liste[5], liste[6])
 
     def getSpielmodus(self) -> int:
+    '''
+    Die Funktion fordert vom Spieler eine Eingabe ein.
+    Je nach Eingabe wird ein von zwei Spielmodi ausgewöhlt.
+    Die Aufforderung wird so lange wiederholt, bis der Spieler
+    eine valide Eingabe eingibt (Parameter 1 oder 2)
+    '''
         global SPIELER
         gueltigeModi = [1, 2]
         spielmodus = 0
@@ -86,6 +119,11 @@ class GUI:
         return spielmodus
 
     def erfasseSpielzug(self):
+    '''
+    Die Funktion erfasst den eingegeben Spielzug und überprüft dabei
+    ob es ein gültiger Spielzug ist. Falls der Spielzug nicht gültig ist
+    wird der Spieler zu einer erneuten Eingabe aufgefordert
+    '''
         spalte = 0
         gueltige_spalten = [1, 2, 3, 4, 5, 6, 7]
         while spalte not in gueltige_spalten:
@@ -100,7 +138,15 @@ class GUI:
 
 
 class Spielmodus:
+    '''
+    Die Klasse Spielmodus umfasst alle Informationen bezüglich dem Spielmodus
+    '''
     def __init__(self, spielmodus: int):
+    '''
+    Die Funktion wählt abhängig von der Eingabe des Spielers den jeweiligen
+    Spielmodus und überprüft gleichzeitig ob die Eingabe gültig ist. Bei einer
+    ungültigen Eingabe wird der Spieler zu einer erneuten Eingabe aufgefoprdert
+    '''
         if spielmodus == 1 or spielmodus == 2:
             self.__spielmodus = spielmodus
         else:
@@ -128,10 +174,18 @@ class Spielmodus:
 
 
 class Spielregeln:
+    '''
+    Die Klasse Spielregeln umfasst alle Informationen bezüglich den Regeln des Spiels
+    '''
     def __init__(self):
         pass
 
     def volleSpalte(self, feld: Spielfeld, spalte: int) -> bool:
+    '''
+    Die Funktion überprüft ob der jeweilige Spielzug des Spielers gültig ist.
+    Falls eine Spalte bereits voll ist, wird der Spieler zu einer erneuten Eingabe
+    aufgefordert.
+    '''
         spielfeld = feld.getFelder()
         if spielfeld[0][spalte] != ".":
             print("Spielzug nicht möglich. Spalte voll.")
@@ -146,6 +200,9 @@ class Spielregeln:
             return True
 
     def gewonnen(self, feld: Spielfeld) -> bool:
+    '''
+    Die Funktion überprüft ob einer der Spieler das Spiel gewonnen hat.
+    '''
         spielfeld = feld.getFelder()
         #stein = 'O' if ZAEHLER % 2 == 0 else 'X'
         zeile = feld.getLetzteReihe()
