@@ -14,12 +14,12 @@ pos2Index = defaultdict(list)
 
 ZAEHLER = 0
 REIHE = 5
-RICHTUNGEN = [(-1, -1), (0, -1), (1, -1), (-1, 0), (1, 0), (-1, 1), (0, 1), (1, 1)]
+RICHTUNGEN = [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]]
+
 
 class Spielfeld:
     def __init__(self):
         self.__felder = [[".", ".", ".", ".", ".", ".", "."],
-                         [".", ".", ".", ".", ".", ".", "."],
                          [".", ".", ".", ".", ".", ".", "."],
                          [".", ".", ".", ".", ".", ".", "."],
                          [".", ".", ".", ".", ".", ".", "."],
@@ -34,19 +34,14 @@ class Spielfeld:
     def setFelder(self, spalte: int):
         global REIHE
         self.__letzteSpalte = spalte
-
-        gueltige_spalten = [1, 2, 3, 4, 5, 6, 7]
-        if spalte not in gueltige_spalten:
-            raise ValueError("Wähle eine Spalte von 1 - 7")
-
         geworfen = False
         for liste in reversed(self.__felder):
             if not geworfen:
                 if liste[spalte] == ".":
                     if ZAEHLER % 2 == 0:
-                        liste[spalte] = 'X'
+                        self.__felder[REIHE][spalte] = 'X'
                     else:
-                        liste[spalte] = '0'
+                        self.__felder[REIHE][spalte] = '0'
                     self.__letzteReihe = REIHE
                     geworfen = True
                 elif liste[spalte] != ".":
@@ -61,13 +56,15 @@ class Spielfeld:
 
 
 class GUI:
+    """
 
+    """
     def __init__(self):
         pass
 
     def printSpielfeld(self, feld: Spielfeld):
         for liste in feld.getFelder():
-            print(liste[0], liste[1], liste[2], liste[3], liste[4], liste[5])
+            print(liste[0], liste[1], liste[2], liste[3], liste[4], liste[5], liste[6])
 
     def getSpielmodus(self) -> int:
         gueltigeModi = [1, 2]
@@ -140,20 +137,20 @@ class Spielregeln:
 
     def gewonnen(self, feld: Spielfeld) -> bool:
         spielfeld = feld.getFelder()
-        stein = 'O' if ZAEHLER % 2 == 0 else 'X'
+        #stein = 'O' if ZAEHLER % 2 == 0 else 'X'
         zeile = feld.getLetzteReihe()
         spalte = feld.getLetzteSpalte()
-        for richtung in RICHTUNGEN:
-            vier_in_einer_reihe = True
-            for i in range(4):
-                delta_spalte, delta_zeile = richtung
-                p1 = (spalte + delta_spalte * i, zeile + delta_zeile * i)
-                if p1 in spielfeld and spielfeld[p1] == stein:
-                    continue
-                vier_in_einer_reihe = False
-                break
-            if vier_in_einer_reihe:
-                return True
+        for i in range(8):
+                vier_in_einer_reihe = True
+                for j in range(4):
+                    spaltenpostion = spalte + RICHTUNGEN[i][0] * j
+                    zeilenposition = zeile + RICHTUNGEN[i][1] * j
+                    if spielfeld[zeile][spalte] == spielfeld[zeilenposition][spaltenpostion]:
+                        continue
+                    vier_in_einer_reihe = False
+                    break
+                if vier_in_einer_reihe:
+                    return True
 
 class DasSpiel:
     """
