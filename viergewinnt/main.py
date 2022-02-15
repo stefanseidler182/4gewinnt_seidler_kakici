@@ -33,16 +33,19 @@ class Spielfeld:
         return self.__felder
 
     def setFelder(self, spalte: int):
-        global REIHE
+        global REIHE, ZAEHLER
         self.__letzteSpalte = spalte
         geworfen = False
+        REIHE = 5
         for liste in reversed(self.__felder):
             if not geworfen:
                 if liste[spalte] == ".":
-                    if ZAEHLER % 2 == 0:
+                    if (ZAEHLER % 2) == 0:
                         liste[spalte] = 'X'
+                        ZAEHLER += 1
                     else:
                         liste[spalte] = '0'
+                        ZAEHLER += 1
                     self.__letzteReihe = REIHE
                     geworfen = True
                 elif liste[spalte] != ".":
@@ -83,7 +86,6 @@ class GUI:
         return spielmodus
 
     def erfasseSpielzug(self):
-        global ZAEHLER
         spalte = 0
         gueltige_spalten = [1, 2, 3, 4, 5, 6, 7]
         while spalte not in gueltige_spalten:
@@ -92,7 +94,6 @@ class GUI:
                 if spalte not in gueltige_spalten:
                     print("FALSCHE EINGABE! Wähle eine Spalte von 1 - 7")
                 else:
-                    ZAEHLER += 1
                     return spalte - 1
             except ValueError:
                 print("FALSCHE EINGABE! Wähle eine Spalte von 1 - 7")
@@ -152,13 +153,14 @@ class Spielregeln:
         for i in range(8):
                 vier_in_einer_reihe = True
                 j = 1
-                while j <= 4:
-                    spaltenpostion = spalte + RICHTUNGEN[i][0] * j
+                while j < 4:
+                    spaltenposition = spalte + RICHTUNGEN[i][0] * j
                     zeilenposition = zeile + RICHTUNGEN[i][1] * j
-                    if 5 > zeilenposition or zeilenposition < 0 or 6 > spaltenpostion or spaltenpostion < 0:
+                    if zeilenposition > 5 or zeilenposition < 0 or spaltenposition > 6 or spaltenposition < 0:
                         j += 1
-                        continue
-                    if spielfeld[zeile][spalte] == spielfeld[zeilenposition][spaltenpostion]:
+                        vier_in_einer_reihe = False
+                        break
+                    if spielfeld[zeile][spalte] == spielfeld[zeilenposition][spaltenposition]:
                         j += 1
                         continue
                     vier_in_einer_reihe = False
