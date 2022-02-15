@@ -117,13 +117,16 @@ class GUI:
         return spielmodus
 
     def beenden(self):
-        beenden = input(f'Möchtest du das Spiel beenden/aufgeben?(j/n)')
-        if beenden == "j":
-            return True
-        elif beenden == "n":
-            return False
-        else:
-            print(f'FALSCHE EINGABE! Gib "j"(beenden) oder "n"(weiterspielen) ein!')
+        i = 0
+        while i < 100:
+            beenden = input(f'Möchtest du das Spiel beenden/aufgeben?(j/n)')
+            if beenden == "j":
+                return True
+            elif beenden == "n":
+                return False
+            else:
+                print(f'FALSCHE EINGABE! Gib "j"(beenden) oder "n"(weiterspielen) ein!')
+                continue
 
 
 
