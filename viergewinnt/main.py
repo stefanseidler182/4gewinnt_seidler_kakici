@@ -1,21 +1,17 @@
 from typing import List
 from random import randint
 
-# Unser Spielfeld hat 7 Spalten und 6 Zeilen, daraus ergibt sich die Anzahl der Zellen
-"""SPALTEN = 7
-ZEILEN = 6
-ZELLEN = SPALTEN * ZEILEN
 # Die Richtungen dienen dazu, zu überprüfen, ob ein Spieler (in eine bestimmte Richtung) gewonnen hat.
 
 # pos2Index geben wir eine Position(Key-Spalte, Zeile) und für diese Position vergeben wir einen
 # Value (Index der betroffenen Quads)
-pos2Index = defaultdict(list)
-"""
 
-ZAEHLER = 0
-REIHE = 5
+
+ZAEHLER = 0  # Diese Variable wird bei jedem Spielzug um eins erhöht.
+REIHE = 5  # Diese Variable wird dazu benötigt, dass der geworfene Spielstein immer in die tiefste Zeile fällt.
 RICHTUNGEN = [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]]
-SPIELER = 0
+# Die Richtungen dienen dazu, zu überprüfen, ob ein Spieler (in eine bestimmte Richtung) gewonnen hat.
+SPIELER = 0  # Diese Variable dient dazu, die Spieler als Spieler 1 und 2 anzusprechen.
 
 
 class Spielfeld:
@@ -23,6 +19,7 @@ class Spielfeld:
     Die Klasse Spielfeld umfasst alle Informationen bezüglich des Spielfeldes.
     Das Spielfeld selbst ist ein Array aus 6 Listen bestehend aus 7 strings(Punkten).
     """
+
     def __init__(self):
         self.__felder = [[".", ".", ".", ".", ".", ".", "."],
                          [".", ".", ".", ".", ".", ".", "."],
@@ -85,16 +82,17 @@ class Spielfeld:
 
 class GUI:
     """
-    Die Klasse GUI umfasst alle Informationen bezüglich dem
-    Graphical User Interface
+    Die Klasse GUI umfasst alle Informationen bezüglich des
+    Graphical User Interfaces.
     """
+
     def __init__(self):
         pass
 
     def printSpielfeld(self, feld: Spielfeld):
-        '''
+        """
         Gibt das Spielfeld aus
-        '''
+        """
         for liste in feld.getFelder():
             print(liste[0], liste[1], liste[2], liste[3], liste[4], liste[5], liste[6])
 
@@ -141,6 +139,7 @@ class Spielmodus:
     """
     Die Klasse Spielmodus umfasst alle Informationen bezüglich dem Spielmodus
     """
+
     def __init__(self, spielmodus: int):
         """
         Die Funktion wählt abhängig von der Eingabe des Spielers den jeweiligen
@@ -181,6 +180,7 @@ class Spielregeln:
     """
     Die Klasse Spielregeln umfasst alle Informationen bezüglich den Regeln des Spiels
     """
+
     def __init__(self):
         pass
 
@@ -212,26 +212,25 @@ class Spielregeln:
         Die Funktion überprüft ob einer der Spieler das Spiel gewonnen hat.
         """
         spielfeld = feld.getFelder()
-        #stein = 'O' if ZAEHLER % 2 == 0 else 'X'
         zeile = feld.getLetzteReihe()
         spalte = feld.getLetzteSpalte()
         for i in range(8):
-                vier_in_einer_reihe = True
-                j = 1
-                while j < 4:
-                    spaltenposition = spalte + RICHTUNGEN[i][0] * j
-                    zeilenposition = zeile + RICHTUNGEN[i][1] * j
-                    if zeilenposition > 5 or zeilenposition < 0 or spaltenposition > 6 or spaltenposition < 0:
-                        j += 1
-                        vier_in_einer_reihe = False
-                        break
-                    if spielfeld[zeile][spalte] == spielfeld[zeilenposition][spaltenposition]:
-                        j += 1
-                        continue
+            vier_in_einer_reihe = True
+            j = 1
+            while j < 4:
+                spaltenposition = spalte + RICHTUNGEN[i][0] * j
+                zeilenposition = zeile + RICHTUNGEN[i][1] * j
+                if zeilenposition > 5 or zeilenposition < 0 or spaltenposition > 6 or spaltenposition < 0:
+                    j += 1
                     vier_in_einer_reihe = False
                     break
-                if vier_in_einer_reihe:
-                    return True
+                if spielfeld[zeile][spalte] == spielfeld[zeilenposition][spaltenposition]:
+                    j += 1
+                    continue
+                vier_in_einer_reihe = False
+                break
+            if vier_in_einer_reihe:
+                return True
 
 
 class DasSpiel:
@@ -251,7 +250,6 @@ class DasSpiel:
         self.spieler1.spielmodus = spielmodus_spieler1
         spielmodus_spieler2 = self.__gui.getSpielmodus()
         self.spieler2.spielmodus = spielmodus_spieler2
-        self.__winner = None
         self.__gui.printSpielfeld(self.__feld)
         while True:
             ueberpruefe_spielzug_spieler1 = False
@@ -289,32 +287,18 @@ if __name__ == '__main__':
     game = DasSpiel()
     game.spielStart()
 
-
+"""
 class Ki:
     def __init__(self):
         pass
 
-
-"""
-    def quadPositionen(position, richtung):
-        positionen = set()
-        spalte, zeile = position
-        spaltenrichtung, zeilenrichtung = richtung
-        neue_spalte, neue_zeile = spalte + spaltenrichtung * 3, zeile + zeilenrichtung * 3
-        if neue_spalte < 0 or neue_spalte >= SPALTEN or neue_zeile < 0 or neue_zeile >= ZEILEN:
-            return False
-        for i in range(4):
-            positionen.add((spalte + spaltenrichtung * i, zeile + zeilenrichtung * i))
-        return positionen
-
-    # Diese Funktion ermittelt die Quads
-    def quadsErmitteln():
+    def quadsErmitteln(self):
         zaehler = 0
         quads = {}
         bekannte_positionen = set()
-        for i in range(ZELLEN):
+        for i in range(42):
             for richtung in RICHTUNGEN:
-                position = (i % SPALTEN, i // SPALTEN)
+                position = (i % 7, i // 7)
                 positionen = quadPositionen(position, richtung)
                 if not positionen or positionen in bekannte_positionen:
                     continue
@@ -326,103 +310,73 @@ class Ki:
                 zaehler += 1
         return quads
 
+    def quadPositionen(self, position, richtung):
+        positionen = set()
+        spalte, zeile = position
+        spaltenrichtung, zeilenrichtung = richtung
+        neue_spalte, neue_zeile = spalte + spaltenrichtung * 3, zeile + zeilenrichtung * 3
+        if neue_spalte < 0 or neue_spalte >= SPALTEN or neue_zeile < 0 or neue_zeile >= ZEILEN:
+            return False
+        for i in range(4):
+            positionen.add((spalte + spaltenrichtung * i, zeile + zeilenrichtung * i))
+        return positionen
 
+    def steinLoeschen(self, position, spieler):
+        del spielfeld[position]
+        for i in pos2Index[position]:
+            quads[i][spieler] -= 1
+
+    def bewerten(self):
+        score = 0
+        for position in spielfeld:
+            for i in pos2Index[position]:
+                gelbe, rote = quads[i]
+                if gelbe > 0 and rote > 0:
+                    continue
+                score += rote * 10
+                score -= gelbe * 10
+        return score
+
+    def computer(self, spieler):
+        bewertete_zuege = []
+        for zug in zugliste():
+            sieg = steinSetzen(zug, spieler)
+            score = minimax(7, -999999, 999999, spieler, sieg)
+            steinLoeschen(zug, spieler)
+            bewertete_zuege.append((score, zug))
+        bewertete_zuege.sort(reverse=spieler)
+        score, bester_zug = bewertete_zuege[0]
+        sieg = steinSetzen(bester_zug, spieler)
+        print(f'Spieler {1 if spieler else 2} setzt {bester_zug} mit der Bewertung {score}')
+        return sieg
+
+    def minimax(self, tiefe, alpha, beta, spieler, sieg):
+        if sieg:
+            return 99999 + tiefe if spieler else -99999 - tiefe
+        if tiefe == 0 or len(spielfeld) == ZELLEN:
+            return bewerten()
+        spieler = not spieler
+        value = -999999 if spieler else 999999
+        for zug in zugliste():
+            sieg = steinSetzen(zug, spieler)
+            score = minimax(tiefe - 1, alpha, beta, spieler, sieg)
+            steinLoeschen(zug, spieler)
+            if spieler:
+                value = max(value, score)
+                alpha = max(value, alpha)
+            else:
+                value = min(value, score)
+                beta = min(value, beta)
+            if alpha >= beta:
+                break
+        return value
+        
+"""
+
+"""
 Die KI hat die folgende Funktionsweise:
 Zuerst werden alle gültigen Quads gefunden. D.h. Es werden von allen Positionen(ZELLEN), in alle Richtungen
 überprüft, ob es ein mögliches Quad gibt, um zu gewinnen.
-
-
-
-def quadPositionen(position, richtung):
-    positionen = set()
-    spalte, zeile = position
-    spaltenrichtung, zeilenrichtung = richtung
-    neue_spalte, neue_zeile = spalte + spaltenrichtung * 3, zeile + zeilenrichtung * 3
-    if neue_spalte < 0 or neue_spalte >= SPALTEN or neue_zeile < 0 or neue_zeile >= ZEILEN:
-        return False
-    for i in range(4):
-        positionen.add((spalte + spaltenrichtung * i, zeile + zeilenrichtung * i))
-    return positionen
-
-
-# Diese Funktion ermittelt die Quads
-def quadsErmitteln():
-    zaehler = 0
-    quads = {}
-    bekannte_positionen = set()
-    for i in range(ZELLEN):
-        for richtung in RICHTUNGEN:
-            position = (i % SPALTEN, i // SPALTEN)
-            positionen = quadPositionen(position, richtung)
-            if not positionen or positionen in bekannte_positionen:
-                continue
-            quads[zaehler] = [0, 0]  # Anzahl der gelben[0], roten[1] Steine im Quad
-            for position in positionen:
-                pos2Index[position].append([zaehler])
-            bekannte_positionen.add(frozenset(positionen))
-            # frozenset bewirkt, dass man einem set ein anderes set hinzufügen kann.
-            zaehler += 1
-    return quads
-
-
-def findeTiefsteZeile(spalte):
-    for zeile in reversed(range(ZEILEN)):
-        if (spalte, zeile) not in spielfeld:
-            return zeile
-
-
-# Diese Funktion überprüft, ob die eingegebene Spalte gültig ist, der Wert für die Spalte darf 0-6 sein.
-def spalteGueltig(spalte):
-    if (spalte, 0) in spielfeld:
-        return False
-    if 0 <= spalte < 7:
-        return True
-
-
-# Diese Funktion gibt das aktuelle Spielfeld aus. Ein '.' steht für ein leeres Feld, in 'O' für einen Stein von
-# Spieler 1 und ein 'X' für einen Stein von Spieler2.
-def printSpielfeld():
-    for i in range(ZELLEN):
-        if i % SPALTEN == 0:
-            print()
-        position = (i % SPALTEN, i // SPALTEN)
-        if position in spielfeld:
-            print(spielfeld[position], end=' ')
-        else:
-            print('.', end=' ')
-    print()
-
-
-# Diese Funktion ersetzt die Funktion gewonnen
-def steinSetzen(position, spieler):
-    sieg = False
-    spielfeld[position] = 'O' if spieler else 'X'
-    for i in pos2Index[position]:
-        quads[i][spieler] += 1
-        if quads[i][spieler] == 4:
-            sieg = True
-    return sieg
-
-
-# Diese Funktion dient der KI zum Löschen von Zügen die sie durchprobiert
-def steinLoeschen(position, spieler):
-    del spielfeld[position]
-    for i in pos2Index[position]:
-        quads[i][spieler] -= 1
-
-
-# Diese Funktion bewertet das Spielfeld (die gesetzen Steine)
-def bewerten():
-    score = 0
-    for position in spielfeld:
-        for i in pos2Index[position]:
-            gelbe, rote = quads[i]
-            if gelbe > 0 and rote > 0:
-                continue
-            score += rote * 10
-            score -= gelbe * 10
-    return score
-
 
 # Diese Funktion liefert alle möglichen Züge
 def zugliste():
@@ -433,55 +387,6 @@ def zugliste():
         zeile = findeTiefsteZeile(spalte)
         zuege.append((spalte, zeile))
     return zuege
-
-
-# Diese Funktion ist für einen echten zweiten Mitspieler bestimmt
-def human(spieler):
-    while True:
-        spalte = int(input('In welche Spalte willst du setzen(0-6)?'))
-        if spalteGueltig(spalte):
-            break
-    zeile = findeTiefsteZeile(spalte)
-    sieg = steinSetzen((spalte, zeile), spieler)
-    return sieg
-
-
-# Diese Funktion ist für die KI bestimmt, dieser nimmt den zug mit dem höchsten score
-def computer(spieler):
-    bewertete_zuege = []
-    for zug in zugliste():
-        sieg = steinSetzen(zug, spieler)
-        score = minimax(7, -999999, 999999, spieler, sieg)
-        steinLoeschen(zug, spieler)
-        bewertete_zuege.append((score, zug))
-    bewertete_zuege.sort(reverse=spieler)
-    score, bester_zug = bewertete_zuege[0]
-    sieg = steinSetzen(bester_zug, spieler)
-    print(bewertete_zuege)
-    print(f'Spieler {1 if spieler else 2} setzt {bester_zug} mit der Bewertung {score}')
-    return sieg
-
-
-def minimax(tiefe, alpha, beta, spieler, sieg):
-    if sieg:
-        return 99999+tiefe if spieler else -99999-tiefe
-    if tiefe == 0 or len(spielfeld) == ZELLEN:
-        return bewerten()
-    spieler = not spieler
-    value = -999999 if spieler else 999999
-    for zug in zugliste():
-        sieg = steinSetzen(zug, spieler)
-        score = minimax(tiefe - 1, alpha, beta, spieler, sieg)
-        steinLoeschen(zug, spieler)
-        if spieler:
-            value = max(value, score)
-            alpha = max(value, alpha)
-        else:
-            value = min(value, score)
-            beta = min(value, beta)
-        if alpha >= beta:
-            break
-    return value
 
 
 spieler = True
