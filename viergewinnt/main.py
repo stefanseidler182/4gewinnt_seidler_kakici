@@ -15,6 +15,7 @@ pos2Index = defaultdict(list)
 ZAEHLER = 0
 REIHE = 5
 RICHTUNGEN = [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]]
+SPIELER = 0
 
 
 class Spielfeld:
@@ -39,9 +40,9 @@ class Spielfeld:
             if not geworfen:
                 if liste[spalte] == ".":
                     if ZAEHLER % 2 == 0:
-                        self.__felder[REIHE][spalte] = 'X'
+                        liste[spalte] = 'X'
                     else:
-                        self.__felder[REIHE][spalte] = '0'
+                        liste[spalte] = '0'
                     self.__letzteReihe = REIHE
                     geworfen = True
                 elif liste[spalte] != ".":
@@ -67,13 +68,18 @@ class GUI:
             print(liste[0], liste[1], liste[2], liste[3], liste[4], liste[5], liste[6])
 
     def getSpielmodus(self) -> int:
+        global SPIELER
         gueltigeModi = [1, 2]
         spielmodus = 0
+        SPIELER += 1
         while spielmodus not in gueltigeModi:
-            spielmodus = int(input(f'Willst du gegen einen Menschen (1) oder einen Computer (2) spielen?'))
-            if spielmodus not in gueltigeModi:
-                print(f'FALSCHE EINGABE! Willst du gegen einen Menschen (1) oder einen Computer (2) spielen?')
-                continue
+            try:
+                spielmodus = int(input(f'Spieler {SPIELER}: Bist du ein Mensch(1) oder ein Computer(2)'))
+                if spielmodus not in gueltigeModi:
+                    print(f'FALSCHE EINGABE! Bist du ein Mensch(1) oder ein Computer(2)')
+                    continue
+            except ValueError:
+                print(f'FALSCHE EINGABE! Bist du ein Mensch(1) oder ein Computer(2)')
         return spielmodus
 
     def erfasseSpielzug(self):
@@ -81,12 +87,15 @@ class GUI:
         spalte = 0
         gueltige_spalten = [1, 2, 3, 4, 5, 6, 7]
         while spalte not in gueltige_spalten:
-            spalte = int(input(f'In welche Spalte möchtest du werfen?'))
-            if spalte not in gueltige_spalten:
+            try:
+                spalte = int(input(f'In welche Spalte möchtest du werfen?'))
+                if spalte not in gueltige_spalten:
+                    print("FALSCHE EINGABE! Wähle eine Spalte von 1 - 7")
+                else:
+                    ZAEHLER += 1
+                    return spalte - 1
+            except ValueError:
                 print("FALSCHE EINGABE! Wähle eine Spalte von 1 - 7")
-            else:
-                ZAEHLER += 1
-                return spalte - 1
 
 
 class Spielmodus:
@@ -142,10 +151,15 @@ class Spielregeln:
         spalte = feld.getLetzteSpalte()
         for i in range(8):
                 vier_in_einer_reihe = True
-                for j in range(4):
+                j = 1
+                while j <= 4:
                     spaltenpostion = spalte + RICHTUNGEN[i][0] * j
                     zeilenposition = zeile + RICHTUNGEN[i][1] * j
+                    if 5 > zeilenposition or zeilenposition < 0 or 6 > spaltenpostion or spaltenpostion < 0:
+                        j += 1
+                        continue
                     if spielfeld[zeile][spalte] == spielfeld[zeilenposition][spaltenpostion]:
+                        j += 1
                         continue
                     vier_in_einer_reihe = False
                     break

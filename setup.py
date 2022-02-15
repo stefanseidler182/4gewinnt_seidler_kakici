@@ -3,10 +3,10 @@ from setuptools import setup, find_packages
 VERSION = '0.1.0'
 
 setup(
-    name='4gewinnt',
+    name='viergewinnt',
     version=VERSION,
     license='MIT',
-    description='4gewinnt-Spiel',
+    description='viergewinnt-Spiel',
     author='Stefan Seidler und Sükrü Kakici',
     author_email='s50862@edu.campus02.at',
     url='https://github.com/stefanseidler182/viergewinnt',
