@@ -1,12 +1,6 @@
 from typing import List
 from random import randint
 
-# Die Richtungen dienen dazu, zu überprüfen, ob ein Spieler (in eine bestimmte Richtung) gewonnen hat.
-
-# pos2Index geben wir eine Position(Key-Spalte, Zeile) und für diese Position vergeben wir einen
-# Value (Index der betroffenen Quads)
-
-
 ZAEHLER = 0  # Diese Variable wird bei jedem Spielzug um eins erhöht.
 REIHE = 5  # Diese Variable wird dazu benötigt, dass der geworfene Spielstein immer in die tiefste Zeile fällt.
 RICHTUNGEN = [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]]
@@ -118,8 +112,8 @@ class GUI:
 
     def beenden(self):
         i = 0
-        while i < 100:
-            beenden = input(f'Möchtest du das Spiel beenden/aufgeben?(j/n)')
+        while i < 1:
+            beenden = input(f'Möchtest du das Spiel aufgeben?(j/n)')
             if beenden == "j":
                 return True
             elif beenden == "n":
@@ -226,11 +220,11 @@ class Spielregeln:
         """
         Die Funktion überprüft ob einer der Spieler das Spiel gewonnen hat.
         Die Funktion ruft das Spielfeld sowie die Zeile und Spalte des zuletzt geworfenen
-        Spielsteins ab. Die erste Schleife überprüft in alle 8 Richtungen. Die if Bedingungen
-        überprüfen ob 4 Steine im Array bzw im Spielfeld sind. Die zweite Schleife überprüft
-        überprüft jeweils die Steine. Wenn der erste Stein gespielt ist, überprüft die Schleife
-        den zweiten gesetzten Stein. Danach den dritten und vierten Stein. Wenn der vierte Stein
-        True ist bricht man aus der Schleife raus und man bekommt den return Wert True.
+        Spielsteins ab. Die erste Schleife überprüft in alle 8 Richtungen. Zuerst wird, die Annahme getroffen, dass
+        der Spieler gewonnen hat, Die erste if-Bedingung überprüft, ob die Zeilen- bzw. Spaltenposition im
+        Spielfeld sind. Die zweite if-Bedingung überprüft, ob 4 Steine in eine bestimmte Richtung im Spielfeld sind.
+        Wenn der vierte Stein True ist, hat der Spieler gewonnen, ansonsten bricht die Schleife ab und setzt den Wert
+        von vier_in_einer-reihe auf False und das Spiel geht weiter.
 
         """
         spielfeld = feld.getFelder()
@@ -259,10 +253,10 @@ class DasSpiel:
     """
     Erstellt das Spiel.
     In der init Funktion wird das Spielfeld, das GUI, die Spielregeln sowie die Spielmodi
-    initialisiert. In der spielStart Funktion wird überprüft ob das Spielfeld voll ist.
-    Sobald das Spielfeld voll ist, wird Unentschieden ausgegeben. Zusätzlich wird
-    überprüft ob Spieler1 bzw. Spieler2 gewonnen hat. Falls einer der Spieler gewonnen hat,
-    wird Gewonnen ausgegeben. 
+    initialisiert. Zuerst wird abgefragt, ob die Spieler Mensch oder Computer sind. In der spielStart-Funktion wird
+    überprüft, ob das Spielfeld voll ist. Wenn das Spielfeld voll ist, wird Unentschieden ausgegeben. Nach jedem Zug
+    wird ein menschlicher Spieler gefragt, ob er/sie aufgeben will(beenden). Nach jedem geworfenen Stein, wird überprüft,
+    ob der Spieler gewonnen hat und das aktuelle Spielfeld wird ausgegeben.
     """
 
     def __init__(self):
@@ -284,6 +278,7 @@ class DasSpiel:
             if spielmodus_spieler1 == 1:
                 beenden = self.__gui.beenden()
                 if beenden:
+                    print("Spieler 2 hat gewonnen!")
                     break
             while not ueberpruefe_spielzug_spieler1:
                 spielzug_spieler_1 = self.spieler1.spielzug(self.__gui)
@@ -303,6 +298,7 @@ class DasSpiel:
             if spielmodus_spieler2 == 1:
                 beenden = self.__gui.beenden()
                 if beenden:
+                    print("Spieler 1 hat gewonnen!")
                     break
             while not ueberpruefe_spielzug_spieler2:
                 spielzug_spieler_2 = self.spieler2.spielzug(self.__gui)
