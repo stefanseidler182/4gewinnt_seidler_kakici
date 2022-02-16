@@ -19,3 +19,5 @@ Es gibt zusätzlich zur Dokumentation im Code auch eine zusätzliche Dokumentati
 Die Anleitung für diese Dokumentation ist mittels Screencast von Christian Hofer im Rahmen der LV Softwareentwicklungsmodelle erstellt worden.
 ### Design Patterns
 https://refactoring.guru/design-patterns/
+### Unittest
+https://www.geeksforgeeks.org/unit-testing-python-unittest/?ref=lbp
