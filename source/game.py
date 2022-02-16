@@ -122,8 +122,6 @@ class GUI:
                 print(f'FALSCHE EINGABE! Gib "j"(beenden) oder "n"(weiterspielen) ein!')
                 continue
 
-
-
     def erfasseSpielzug(self):
         """
         Die Funktion erfasst den eingegebenen Spielzug und überprüft dabei,
@@ -401,7 +399,7 @@ class Ki:
             if alpha >= beta:
                 break
         return value
-        
+
 """
 
 """
