@@ -259,7 +259,10 @@ class DasSpiel:
     """
     Erstellt das Spiel.
     In der init Funktion wird das Spielfeld, das GUI, die Spielregeln sowie die Spielmodi
-    initialisiert. Die spiel
+    initialisiert. In der spielStart Funktion wird überprüft ob das Spielfeld voll ist.
+    Sobald das Spielfeld voll ist, wird Unentschieden ausgegeben. Zusätzlich wird
+    überprüft ob Spieler1 bzw. Spieler2 gewonnen hat. Falls einer der Spieler gewonnen hat,
+    wird Gewonnen ausgegeben. 
     """
 
     def __init__(self):
