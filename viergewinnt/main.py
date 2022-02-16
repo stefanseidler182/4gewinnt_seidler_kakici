@@ -116,6 +116,20 @@ class GUI:
                 print(f'FALSCHE EINGABE! Bist du ein Mensch(1) oder ein Computer(2)')
         return spielmodus
 
+    def beenden(self):
+        i = 0
+        while i < 100:
+            beenden = input(f'Möchtest du das Spiel beenden/aufgeben?(j/n)')
+            if beenden == "j":
+                return True
+            elif beenden == "n":
+                return False
+            else:
+                print(f'FALSCHE EINGABE! Gib "j"(beenden) oder "n"(weiterspielen) ein!')
+                continue
+
+
+
     def erfasseSpielzug(self):
         """
         Die Funktion erfasst den eingegebenen Spielzug und überprüft dabei,
@@ -124,6 +138,7 @@ class GUI:
         """
         spalte = 0
         gueltige_spalten = [1, 2, 3, 4, 5, 6, 7]
+
         while spalte not in gueltige_spalten:
             try:
                 spalte = int(input(f'In welche Spalte möchtest du werfen?'))
@@ -263,6 +278,10 @@ class DasSpiel:
         while True:
             ueberpruefe_spielzug_spieler1 = False
             spielzug_spieler_1 = None
+            if spielmodus_spieler1 == 1:
+                beenden = self.__gui.beenden()
+                if beenden:
+                    break
             while not ueberpruefe_spielzug_spieler1:
                 spielzug_spieler_1 = self.spieler1.spielzug(self.__gui)
                 ueberpruefe_spielzug_spieler1 = self.__spielregeln.volleSpalte(self.__feld, spielzug_spieler_1)
@@ -278,6 +297,10 @@ class DasSpiel:
 
             ueberpruefe_spielzug_spieler2 = False
             spielzug_spieler_2 = None
+            if spielmodus_spieler2 == 1:
+                beenden = self.__gui.beenden()
+                if beenden:
+                    break
             while not ueberpruefe_spielzug_spieler2:
                 spielzug_spieler_2 = self.spieler2.spielzug(self.__gui)
                 ueberpruefe_spielzug_spieler2 = self.__spielregeln.volleSpalte(self.__feld, spielzug_spieler_2)
