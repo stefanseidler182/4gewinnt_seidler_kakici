@@ -1,12 +1,12 @@
 import unittest
-# from viergewinnt.main import main
-from viergewinnt.main import Spielfeld, GUI, Spielregeln, Spielmodus, DasSpiel
+from source.main import *
 '''
 Hey Stefan! Hab game.main in viergewinnt geändert weil es das Modul game nicht findet.
 Aber das Modul viergewinnt findet es auch nicht.
 
 Bereits probiert: https://stackoverflow.com/questions/62383007/python-unit-test-cannot-find-module
 '''
+
 
 class ViergewinntTests(unittest.TestCase):
     def __init__(self):
@@ -74,7 +74,7 @@ def test_Spielzug(self):
     self.Feld1.setFelder(1, "X")
     self.assertTrue(self.spielregeln1.Spielzug(self.Feld1, 1))
     self.Feld1.setFelder(1, "X")
-    self.assertTrue(self.spielregeln1.Spielzugy(self.Feld1, 1))
+    self.assertTrue(self.spielregeln1.Spielzug(self.Feld1, 1))
     self.Feld1.setFelder(1, "X")
     self.assertTrue(self.spielregeln1.Spielzug(self.Feld1, 1))
     self.Feld1.setFelder(1, "X")
