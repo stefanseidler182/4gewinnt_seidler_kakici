@@ -1,16 +1,6 @@
 from typing import List
 from random import randint
 
-ZAEHLER = 0  # Diese Variable wird bei jedem Spielzug um eins erhöht.
-REIHE = 5  # Diese Variable wird dazu benötigt, dass der geworfene Spielstein immer in die tiefste Zeile fällt.
-RICHTUNGEN = [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]]
-# Die Richtungen dienen dazu, zu überprüfen, ob ein Spieler (in eine bestimmte Richtung) gewonnen hat.
-SPIELER = 0  # Diese Variable dient dazu, die Spieler als Spieler 1 und 2 anzusprechen.
-"""
-parameter und return werte beschreiben
-spielfeldklasse parameter werden übergeben
-"""
-
 
 class Spielfeld:
     """
@@ -27,6 +17,7 @@ class Spielfeld:
                          [".", ".", ".", ".", ".", ".", "."]]
         self.__letzteSpalte = None
         self.__letzteReihe = None
+        self.zaehler = 0
 
     def getFelder(self) -> List:
         """
@@ -44,24 +35,23 @@ class Spielfeld:
         spalte: int
             Gibt die Spalte die vom Spieler ausgewählt wurde, um den Stein zu setzen
         """
-        global REIHE, ZAEHLER
         self.__letzteSpalte = spalte
         geworfen = False
-        REIHE = 5
+        reihe = 5
         for liste in reversed(self.__felder):
             if not geworfen:
                 if liste[spalte] == ".":
-                    if (ZAEHLER % 2) == 0:
+                    if (self.zaehler % 2) == 0:
                         liste[spalte] = 'X'
-                        ZAEHLER += 1
+                        self.zaehler += 1
                     else:
                         liste[spalte] = '0'
-                        ZAEHLER += 1
-                    self.__letzteReihe = REIHE
+                        self.zaehler += 1
+                    self.__letzteReihe = reihe
                     geworfen = True
                 elif liste[spalte] != ".":
-                    REIHE -= 1
-                    self.__letzteReihe = REIHE
+                    reihe -= 1
+                    self.__letzteReihe = reihe
 
     def getLetzteReihe(self) -> int:
         """
@@ -85,7 +75,7 @@ class GUI:
     """
 
     def __init__(self):
-        pass
+        self.spieler = 0
 
     def printSpielfeld(self, feld: Spielfeld):
         """
@@ -100,13 +90,12 @@ class GUI:
         Je nach Eingabe wird ein von zwei Spielmodi ausgewählt.
         Die Aufforderung wird so lange wiederholt, bis die Eingabe valide ist. (Parameter 1 oder 2)
         """
-        global SPIELER
         gueltigeModi = [1, 2]
         spielmodus = 0
-        SPIELER += 1
+        self.spieler += 1
         while spielmodus not in gueltigeModi:
             try:
-                spielmodus = int(input(f'Spieler {SPIELER}: Bist du ein Mensch(1) oder ein Computer(2)'))
+                spielmodus = int(input(f'Spieler {self.spieler}: Bist du ein Mensch(1) oder ein Computer(2)'))
                 if spielmodus not in gueltigeModi:
                     print(f'FALSCHE EINGABE! Bist du ein Mensch(1) oder ein Computer(2)')
                     continue
@@ -163,9 +152,6 @@ class Spielmodus:
             raise ValueError("Falsche Eingabe! Gib 1 ein, wenn du gegen einen Mensch spielen willst oder 2,"
                              "wenn du gegen einen Computergegner spielen willst.")
 
-    def __repr__(self):
-        return f"Spielmodus: {self.__spielmodus}"
-
     @property
     def spielmodus(self):
         return self.__spielmodus
@@ -193,7 +179,7 @@ class Spielregeln:
     """
 
     def __init__(self):
-        pass
+        self.richtungen = [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]]
 
     def volleSpalte(self, feld: Spielfeld, spalte: int) -> bool:
         """
@@ -208,15 +194,20 @@ class Spielregeln:
         else:
             return True
 
-    def voll(self) -> bool:
+    def voll(self, feld: Spielfeld) -> bool:
         """
-        Diese Funktion überprüft nach jedem Spielzug, ob das Spielfeld voll ist. Der ZAEHLER wird bei jedem Spielzug,
-        um eins erhöht.
+        Diese Funktion überprüft nach jedem Spielzug, ob das Spielfeld voll ist. Zuerst ...
         """
-        if ZAEHLER < 42:
-            return False
-        else:
+        spielfeld = feld.getFelder()
+        for i in range(6):
+            if spielfeld[0][i] == ".":
+                return False
+            else:
+                continue
+        if spielfeld[0][6] != ".":
             return True
+        else:
+            return False
 
     def gewonnen(self, feld: Spielfeld) -> bool:
         """
@@ -236,8 +227,8 @@ class Spielregeln:
             vier_in_einer_reihe = True
             j = 1
             while j < 4:
-                spaltenposition = spalte + RICHTUNGEN[i][0] * j
-                zeilenposition = zeile + RICHTUNGEN[i][1] * j
+                spaltenposition = spalte + self.richtungen[i][0] * j
+                zeilenposition = zeile + self.richtungen[i][1] * j
                 if zeilenposition > 5 or zeilenposition < 0 or spaltenposition > 6 or spaltenposition < 0:
                     j += 1
                     vier_in_einer_reihe = False
@@ -288,7 +279,7 @@ class DasSpiel:
 
             self.__feld.setFelder(spielzug_spieler_1)
             self.__gui.printSpielfeld(self.__feld)
-            if self.__spielregeln.voll():
+            if self.__spielregeln.voll(self.__feld):
                 print("Das Spielfeld ist voll. UNENTSCHIEDEN!")
                 break
             if self.__spielregeln.gewonnen(self.__feld):
@@ -308,7 +299,7 @@ class DasSpiel:
 
             self.__feld.setFelder(spielzug_spieler_2)
             self.__gui.printSpielfeld(self.__feld)
-            if self.__spielregeln.voll():
+            if self.__spielregeln.voll(self.__feld):
                 print("Das Spielfeld ist voll. UNENTSCHIEDEN!")
                 break
             if self.__spielregeln.gewonnen(self.__feld):
