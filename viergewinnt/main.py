@@ -6,10 +6,10 @@ REIHE = 5  # Diese Variable wird dazu benötigt, dass der geworfene Spielstein i
 RICHTUNGEN = [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]]
 # Die Richtungen dienen dazu, zu überprüfen, ob ein Spieler (in eine bestimmte Richtung) gewonnen hat.
 SPIELER = 0  # Diese Variable dient dazu, die Spieler als Spieler 1 und 2 anzusprechen.
-
+"""
 parameter und return werte beschreiben
 spielfeldklasse parameter werden übergeben
-
+"""
 
 class Spielfeld:
     """
@@ -318,131 +318,3 @@ class DasSpiel:
 if __name__ == '__main__':
     game = DasSpiel()
     game.spielStart()
-
-"""
-class Ki:
-    def __init__(self):
-        pass
-
-    def quadsErmitteln(self):
-        zaehler = 0
-        quads = {}
-        bekannte_positionen = set()
-        for i in range(42):
-            for richtung in RICHTUNGEN:
-                position = (i % 7, i // 7)
-                positionen = quadPositionen(position, richtung)
-                if not positionen or positionen in bekannte_positionen:
-                    continue
-                quads[zaehler] = [0, 0]  # Anzahl der gelben[0], roten[1] Steine im Quad
-                for position in positionen:
-                    pos2Index[position].append([zaehler])
-                bekannte_positionen.add(frozenset(positionen))
-                # frozenset bewirkt, dass man einem set ein anderes set hinzufügen kann.
-                zaehler += 1
-        return quads
-
-    def quadPositionen(self, position, richtung):
-        positionen = set()
-        spalte, zeile = position
-        spaltenrichtung, zeilenrichtung = richtung
-        neue_spalte, neue_zeile = spalte + spaltenrichtung * 3, zeile + zeilenrichtung * 3
-        if neue_spalte < 0 or neue_spalte >= SPALTEN or neue_zeile < 0 or neue_zeile >= ZEILEN:
-            return False
-        for i in range(4):
-            positionen.add((spalte + spaltenrichtung * i, zeile + zeilenrichtung * i))
-        return positionen
-
-    def steinLoeschen(self, position, spieler):
-        del spielfeld[position]
-        for i in pos2Index[position]:
-            quads[i][spieler] -= 1
-
-    def bewerten(self):
-        score = 0
-        for position in spielfeld:
-            for i in pos2Index[position]:
-                gelbe, rote = quads[i]
-                if gelbe > 0 and rote > 0:
-                    continue
-                score += rote * 10
-                score -= gelbe * 10
-        return score
-
-    def computer(self, spieler):
-        bewertete_zuege = []
-        for zug in zugliste():
-            sieg = steinSetzen(zug, spieler)
-            score = minimax(7, -999999, 999999, spieler, sieg)
-            steinLoeschen(zug, spieler)
-            bewertete_zuege.append((score, zug))
-        bewertete_zuege.sort(reverse=spieler)
-        score, bester_zug = bewertete_zuege[0]
-        sieg = steinSetzen(bester_zug, spieler)
-        print(f'Spieler {1 if spieler else 2} setzt {bester_zug} mit der Bewertung {score}')
-        return sieg
-
-    def minimax(self, tiefe, alpha, beta, spieler, sieg):
-        if sieg:
-            return 99999 + tiefe if spieler else -99999 - tiefe
-        if tiefe == 0 or len(spielfeld) == ZELLEN:
-            return bewerten()
-        spieler = not spieler
-        value = -999999 if spieler else 999999
-        for zug in zugliste():
-            sieg = steinSetzen(zug, spieler)
-            score = minimax(tiefe - 1, alpha, beta, spieler, sieg)
-            steinLoeschen(zug, spieler)
-            if spieler:
-                value = max(value, score)
-                alpha = max(value, alpha)
-            else:
-                value = min(value, score)
-                beta = min(value, beta)
-            if alpha >= beta:
-                break
-        return value
-
-"""
-
-"""
-Die KI hat die folgende Funktionsweise:
-Zuerst werden alle gültigen Quads gefunden. D.h. Es werden von allen Positionen(ZELLEN), in alle Richtungen
-überprüft, ob es ein mögliches Quad gibt, um zu gewinnen.
-
-# Diese Funktion liefert alle möglichen Züge
-def zugliste():
-    zuege = []
-    for spalte in range(SPALTEN):
-        if not spalteGueltig(spalte):
-            continue
-        zeile = findeTiefsteZeile(spalte)
-        zuege.append((spalte, zeile))
-    return zuege
-
-
-spieler = True
-quads = quadsErmitteln()
-while True:
-    printSpielfeld()
-    if spieler:
-        sieg = human(spieler)
-    else:
-        sieg = human(spieler)
-    if sieg:
-        printSpielfeld()
-        print('GEWONNEN!!!')
-        break
-    spieler = not spieler
-
-'''
-    Der Ablauf des Spiels schaut folgendermaßen aus:
-    Zuerst wird das leere Spielfeld ausgegeben.
-    Danach wählt der/die erste SpielerIn eine Spalte aus in die er/sie den Stein werfen will.
-    Es wird überprüft, ob die Eingabe der Spalte gültig ist. (Werte von 0-6 sind erlaubt.)
-    Danach wird überprüft ob, der/die SpielerIn gewonnen hat. (4 Steine in eine bestimmte Richtung.)
-    Falls, dass nicht der Fall ist wirft der nächste Spieler einen Stein.
-    Es wird wieder die Gültigkeit der Spalte und ob gewonnen wurde überprüft.
-    Dies wird solange durchgeführt, bis ein Spieler gewonnen hat oder das Spielfeld voll mit Steinen ist.
-    '''
-"""
