@@ -7,6 +7,9 @@ RICHTUNGEN = [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 
 # Die Richtungen dienen dazu, zu überprüfen, ob ein Spieler (in eine bestimmte Richtung) gewonnen hat.
 SPIELER = 0  # Diese Variable dient dazu, die Spieler als Spieler 1 und 2 anzusprechen.
 
+parameter und return werte beschreiben
+spielfeldklasse parameter werden übergeben
+
 
 class Spielfeld:
     """
