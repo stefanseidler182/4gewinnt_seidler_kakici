@@ -67,6 +67,7 @@ class ViergewinntTests(unittest.TestCase):
 def test_Spielzug(self):
     """
     Überprüft, ob ein Zug möglich ist.
+
     _________________________________
 
     assertTrue() ist eine weitere Unittest library Funktion, welche den test Wert mit True vergleicht.

@@ -25,5 +25,5 @@ Nachteile umwandeln, wenn man nur wenige Algorithmen hat, welche selten wechseln
 Die Grafik visualisiert die Funktion des Strategy Patterns (Kontext = Objekt; Strategie = abgekapselter Algorithmus).
 Es ist ersichtlich, dass der Kontext nicht abhängig von einer Implementierung ist, daher können unterschiedliche Verhalten
 zugewiesen werden, ohne dass ein Code geändert werden muss. Zusammenfassend kann man
-sagen, dass das Verhalten unabhängig vom Kontext wird. Der Kontext selbsst wird unabhängig
-von einer Implementierung.
+sagen, dass das Verhalten unabhängig vom Kontext wird. Der Kontext selbst wird unabhängig
+von einer Implementierung.  
