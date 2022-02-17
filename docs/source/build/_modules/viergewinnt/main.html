@@ -1,0 +1,623 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>viergewinnt.main &mdash; 4Gewinnt 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> 4Gewinnt
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../allgemein.html">Überschrift 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../design.html">Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../test.html">Test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ki.html">KI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pattern.html">Software Design Patterns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">viergewinnt</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">4Gewinnt</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>viergewinnt.main</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for viergewinnt.main</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randint</span>
+
+<span class="c1"># Unser Spielfeld hat 7 Spalten und 6 Zeilen, daraus ergibt sich die Anzahl der Zellen</span>
+<span class="sd">&quot;&quot;&quot;SPALTEN = 7</span>
+<span class="sd">ZEILEN = 6</span>
+<span class="sd">ZELLEN = SPALTEN * ZEILEN</span>
+<span class="sd"># Die Richtungen dienen dazu, zu überprüfen, ob ein Spieler (in eine bestimmte Richtung) gewonnen hat.</span>
+<span class="sd">RICHTUNGEN = [(-1, -1), (0, -1), (1, -1), (-1, 0), (1, 0), (-1, 1), (0, 1), (1, 1)]</span>
+<span class="sd"># pos2Index geben wir eine Position(Key-Spalte, Zeile) und für diese Position vergeben wir einen</span>
+<span class="sd"># Value (Index der betroffenen Quads)</span>
+<span class="sd">pos2Index = defaultdict(list)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">ZAEHLER</span> <span class="o">=</span> <span class="mi">0</span>
+
+
+<div class="viewcode-block" id="Spielfeld"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Spielfeld">[docs]</a><span class="k">class</span> <span class="nc">Spielfeld</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__felder</span> <span class="o">=</span> <span class="p">[[</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">],</span>
+                         <span class="p">[</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">],</span>
+                         <span class="p">[</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">],</span>
+                         <span class="p">[</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">],</span>
+                         <span class="p">[</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">],</span>
+                         <span class="p">[</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">],</span> <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__letzteSpalte</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__letzteReihe</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Spielfeld.getFelder"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Spielfeld.getFelder">[docs]</a>    <span class="k">def</span> <span class="nf">getFelder</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__fields</span></div>
+
+<div class="viewcode-block" id="Spielfeld.setFelder"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Spielfeld.setFelder">[docs]</a>    <span class="k">def</span> <span class="nf">setFelder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__letzteSpalte</span> <span class="o">=</span> <span class="n">spalte</span>
+
+        <span class="n">gueltige_spalten</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">spalte</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">gueltige_spalten</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Wähle eine Spalte von 1 - 7&quot;</span><span class="p">)</span>
+
+        <span class="n">reihe</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="n">geworfen</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">liste</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__felder</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">geworfen</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">liste</span><span class="p">[</span><span class="n">spalte</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;.&quot;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">ZAEHLER</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">liste</span><span class="p">[</span><span class="n">spalte</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;X&#39;</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">liste</span><span class="p">[</span><span class="n">spalte</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__letzteReihe</span> <span class="o">=</span> <span class="n">reihe</span>
+                    <span class="n">geworfen</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">elif</span> <span class="n">liste</span><span class="p">[</span><span class="n">spalte</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;.&quot;</span><span class="p">:</span>
+                    <span class="n">reihe</span> <span class="o">-=</span> <span class="mi">1</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__letzteReihe</span> <span class="o">=</span> <span class="n">reihe</span></div>
+
+<div class="viewcode-block" id="Spielfeld.getLetzteReihe"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Spielfeld.getLetzteReihe">[docs]</a>    <span class="k">def</span> <span class="nf">getLetzteReihe</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__letzteReihe</span></div>
+
+<div class="viewcode-block" id="Spielfeld.getLetzteSpalte"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Spielfeld.getLetzteSpalte">[docs]</a>    <span class="k">def</span> <span class="nf">getLetzteSpalte</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__letzteSpalte</span></div></div>
+
+
+<div class="viewcode-block" id="GUI"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.GUI">[docs]</a><span class="k">class</span> <span class="nc">GUI</span><span class="p">:</span>
+
+<div class="viewcode-block" id="GUI.printSpielfeld"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.GUI.printSpielfeld">[docs]</a>    <span class="k">def</span> <span class="nf">printSpielfeld</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feld</span><span class="p">:</span> <span class="n">Spielfeld</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gibt das Spielfeld aus&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">liste</span> <span class="ow">in</span> <span class="n">feld</span><span class="o">.</span><span class="n">getFelder</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">liste</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">liste</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">liste</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">liste</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">liste</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">liste</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="GUI.getSpielmodus"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.GUI.getSpielmodus">[docs]</a>    <span class="k">def</span> <span class="nf">getSpielmodus</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">gueltigeModi</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="n">spielmodus</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">spielmodus</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">gueltigeModi</span><span class="p">:</span>
+            <span class="n">spielmodus</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Willst du gegen einen Menschen (1) oder einen Computer (2) spielen?&#39;</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">spielmodus</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">gueltigeModi</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;FALSCHE EINGABE! Willst du gegen einen Menschen (1) oder einen Computer (2) spielen?&#39;</span><span class="p">)</span>
+                <span class="k">continue</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">spielmodus</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GUI.erfasseSpielzug"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.GUI.erfasseSpielzug">[docs]</a>    <span class="k">def</span> <span class="nf">erfasseSpielzug</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">global</span> <span class="n">ZAEHLER</span>
+        <span class="n">spalte</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">gueltige_spalten</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
+        <span class="k">while</span> <span class="n">spalte</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">gueltige_spalten</span><span class="p">:</span>
+            <span class="n">spalte</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;In welche Spalte möchtest du werfen?&#39;</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">spalte</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">gueltige_spalten</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;FALSCHE EINGABE! Wähle eine Spalte von 1 - 7&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ZAEHLER</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">return</span> <span class="n">spalte</span> <span class="o">-</span> <span class="mi">1</span></div></div>
+
+
+<div class="viewcode-block" id="Spielmodus"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Spielmodus">[docs]</a><span class="k">class</span> <span class="nc">Spielmodus</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spielmodus</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">spielmodus</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">spielmodus</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__spielmodus</span> <span class="o">=</span> <span class="n">spielmodus</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Falsche Eingabe! Gib 1 ein, wenn du gegen einen Mensch spielen willst oder 2, wenn du gegen einen Computergegner spielen willst.&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Spielmodus: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__spielmodus</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">spielmodus</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__spielmodus</span>
+
+    <span class="nd">@spielmodus</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">spielmodus</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__spielmodus</span> <span class="o">=</span> <span class="n">value</span>
+
+<div class="viewcode-block" id="Spielmodus.playDraw"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Spielmodus.playDraw">[docs]</a>    <span class="k">def</span> <span class="nf">playDraw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gui</span><span class="p">:</span> <span class="n">GUI</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__spielmodus</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">spalte</span> <span class="o">=</span> <span class="n">gui</span><span class="o">.</span><span class="n">erfasseSpielzug</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">spalte</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">__spielmodus</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">spalte</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">spalte</span></div></div>
+
+
+<div class="viewcode-block" id="Spielregeln"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Spielregeln">[docs]</a><span class="k">class</span> <span class="nc">Spielregeln</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="Spielregeln.volleSpalte"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Spielregeln.volleSpalte">[docs]</a>    <span class="k">def</span> <span class="nf">volleSpalte</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feld</span><span class="p">:</span> <span class="n">Spielfeld</span><span class="p">,</span> <span class="n">spalte</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="n">spielfeld</span> <span class="o">=</span> <span class="n">feld</span><span class="o">.</span><span class="n">getFelder</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">spielfeld</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">spalte</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;.&quot;</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Spielzug nicht möglich. Spalte voll.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="Spielregeln.voll"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Spielregeln.voll">[docs]</a>    <span class="k">def</span> <span class="nf">voll</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Überprüft, ob das Spielfeld voll ist.</span>
+<span class="sd">        Solange noch freie Felder am Spielfeld sind, wird False geliefert. Ist das Spielfeld voll wird True geliefert.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        field: Field</span>
+<span class="sd">            Das übergebene Spielfeld wird überprüft.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        True oder False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">ZAEHLER</span> <span class="o">&lt;</span> <span class="mi">42</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span></div></div>
+
+
+<div class="viewcode-block" id="DasSpiel"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.DasSpiel">[docs]</a><span class="k">class</span> <span class="nc">DasSpiel</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Erstellt das Spiel.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__feld</span> <span class="o">=</span> <span class="n">Spielfeld</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__gui</span> <span class="o">=</span> <span class="n">GUI</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__spielregeln</span> <span class="o">=</span> <span class="n">Spielregeln</span><span class="p">()</span>
+
+<div class="viewcode-block" id="DasSpiel.spielStart"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.DasSpiel.spielStart">[docs]</a>    <span class="k">def</span> <span class="nf">spielStart</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">spielmodus_spieler1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__gui</span><span class="o">.</span><span class="n">getSpielmodus</span><span class="p">()</span>
+        <span class="n">spielmodus_spieler2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__gui</span><span class="o">.</span><span class="n">getSpielmodus</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__spieler1</span><span class="o">.</span><span class="n">spielmodus</span> <span class="o">=</span> <span class="n">spielmodus_spieler1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__spieler2</span><span class="o">.</span><span class="n">spielmodus</span> <span class="o">=</span> <span class="n">spielmodus_spieler2</span>
+        <span class="n">zeichen_spieler1</span> <span class="o">=</span> <span class="s1">&#39;X&#39;</span>
+        <span class="n">zeichen_spieler2</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__winner</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="DasSpiel.startGame"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.DasSpiel.startGame">[docs]</a>    <span class="k">def</span> <span class="nf">startGame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">spieler</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__gui</span><span class="o">.</span><span class="n">printSpielfeld</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__feld</span><span class="p">)</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">check_draw_player1</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">draw_player_1</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">while</span> <span class="ow">not</span> <span class="n">check_draw_player1</span><span class="p">:</span>
+                <span class="n">draw_player_1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__player1</span><span class="o">.</span><span class="n">playDraw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__gui</span><span class="p">)</span>
+                <span class="n">check_draw_player1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ruleset</span><span class="o">.</span><span class="n">checkDraw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__feld</span><span class="p">,</span> <span class="n">draw_player_1</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">__feld</span><span class="o">.</span><span class="n">setFields</span><span class="p">(</span><span class="n">draw_player_1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__player1</span><span class="o">.</span><span class="n">playerid</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__gui</span><span class="o">.</span><span class="n">outputField</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__feld</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ruleset</span><span class="o">.</span><span class="n">checkGameOver</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__feld</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Das Spielfeld ist voll. Das Spiel ist vorbei&quot;</span><span class="p">)</span>
+                <span class="k">break</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ruleset</span><span class="o">.</span><span class="n">checkPlayerWon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__feld</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__player1</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Herzlichen Glückwunsch </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__player1</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">. Gut gespielt! :)&quot;</span><span class="p">)</span>
+                <span class="k">break</span>
+
+            <span class="n">check_draw_player2</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">draw_player_2</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">while</span> <span class="ow">not</span> <span class="n">check_draw_player2</span><span class="p">:</span>
+                <span class="n">draw_player_2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__player2</span><span class="o">.</span><span class="n">playDraw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__gui</span><span class="p">)</span>
+                <span class="c1"># print(draw_player_2)</span>
+                <span class="n">check_draw_player2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ruleset</span><span class="o">.</span><span class="n">checkDraw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__feld</span><span class="p">,</span> <span class="n">draw_player_2</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">__feld</span><span class="o">.</span><span class="n">setFields</span><span class="p">(</span><span class="n">draw_player_2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__player2</span><span class="o">.</span><span class="n">playerid</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__gui</span><span class="o">.</span><span class="n">outputField</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__feld</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ruleset</span><span class="o">.</span><span class="n">checkGameOver</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__feld</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Das Spielfeld ist voll. Das Spiel ist vorbei&quot;</span><span class="p">)</span>
+                <span class="k">break</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ruleset</span><span class="o">.</span><span class="n">checkPlayerWon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__feld</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__player2</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Herzlichen Glückwunsch </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__player2</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">. Gut gespielt! :)&quot;</span><span class="p">)</span>
+                <span class="k">break</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">game</span> <span class="o">=</span> <span class="n">DasSpiel</span><span class="p">()</span>
+    <span class="n">game</span><span class="o">.</span><span class="n">spielStart</span><span class="p">()</span>
+    <span class="n">game</span><span class="o">.</span><span class="n">startGame</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="Ki"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Ki">[docs]</a><span class="k">class</span> <span class="nc">Ki</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    def quadPositionen(position, richtung):</span>
+<span class="sd">        positionen = set()</span>
+<span class="sd">        spalte, zeile = position</span>
+<span class="sd">        spaltenrichtung, zeilenrichtung = richtung</span>
+<span class="sd">        neue_spalte, neue_zeile = spalte + spaltenrichtung * 3, zeile + zeilenrichtung * 3</span>
+<span class="sd">        if neue_spalte &lt; 0 or neue_spalte &gt;= SPALTEN or neue_zeile &lt; 0 or neue_zeile &gt;= ZEILEN:</span>
+<span class="sd">            return False</span>
+<span class="sd">        for i in range(4):</span>
+<span class="sd">            positionen.add((spalte + spaltenrichtung * i, zeile + zeilenrichtung * i))</span>
+<span class="sd">        return positionen</span>
+
+<span class="sd">    # Diese Funktion ermittelt die Quads</span>
+<span class="sd">    def quadsErmitteln():</span>
+<span class="sd">        zaehler = 0</span>
+<span class="sd">        quads = {}</span>
+<span class="sd">        bekannte_positionen = set()</span>
+<span class="sd">        for i in range(ZELLEN):</span>
+<span class="sd">            for richtung in RICHTUNGEN:</span>
+<span class="sd">                position = (i % SPALTEN, i // SPALTEN)</span>
+<span class="sd">                positionen = quadPositionen(position, richtung)</span>
+<span class="sd">                if not positionen or positionen in bekannte_positionen:</span>
+<span class="sd">                    continue</span>
+<span class="sd">                quads[zaehler] = [0, 0]  # Anzahl der gelben[0], roten[1] Steine im Quad</span>
+<span class="sd">                for position in positionen:</span>
+<span class="sd">                    pos2Index[position].append([zaehler])</span>
+<span class="sd">                bekannte_positionen.add(frozenset(positionen))</span>
+<span class="sd">                # frozenset bewirkt, dass man einem set ein anderes set hinzufügen kann.</span>
+<span class="sd">                zaehler += 1</span>
+<span class="sd">        return quads</span>
+
+
+<span class="sd">Die KI hat die folgende Funktionsweise:</span>
+<span class="sd">Zuerst werden alle gültigen Quads gefunden. D.h. Es werden von allen Positionen(ZELLEN), in alle Richtungen</span>
+<span class="sd">überprüft, ob es ein mögliches Quad gibt, um zu gewinnen.</span>
+
+
+
+<span class="sd">def quadPositionen(position, richtung):</span>
+<span class="sd">    positionen = set()</span>
+<span class="sd">    spalte, zeile = position</span>
+<span class="sd">    spaltenrichtung, zeilenrichtung = richtung</span>
+<span class="sd">    neue_spalte, neue_zeile = spalte + spaltenrichtung * 3, zeile + zeilenrichtung * 3</span>
+<span class="sd">    if neue_spalte &lt; 0 or neue_spalte &gt;= SPALTEN or neue_zeile &lt; 0 or neue_zeile &gt;= ZEILEN:</span>
+<span class="sd">        return False</span>
+<span class="sd">    for i in range(4):</span>
+<span class="sd">        positionen.add((spalte + spaltenrichtung * i, zeile + zeilenrichtung * i))</span>
+<span class="sd">    return positionen</span>
+
+
+<span class="sd"># Diese Funktion ermittelt die Quads</span>
+<span class="sd">def quadsErmitteln():</span>
+<span class="sd">    zaehler = 0</span>
+<span class="sd">    quads = {}</span>
+<span class="sd">    bekannte_positionen = set()</span>
+<span class="sd">    for i in range(ZELLEN):</span>
+<span class="sd">        for richtung in RICHTUNGEN:</span>
+<span class="sd">            position = (i % SPALTEN, i // SPALTEN)</span>
+<span class="sd">            positionen = quadPositionen(position, richtung)</span>
+<span class="sd">            if not positionen or positionen in bekannte_positionen:</span>
+<span class="sd">                continue</span>
+<span class="sd">            quads[zaehler] = [0, 0]  # Anzahl der gelben[0], roten[1] Steine im Quad</span>
+<span class="sd">            for position in positionen:</span>
+<span class="sd">                pos2Index[position].append([zaehler])</span>
+<span class="sd">            bekannte_positionen.add(frozenset(positionen))</span>
+<span class="sd">            # frozenset bewirkt, dass man einem set ein anderes set hinzufügen kann.</span>
+<span class="sd">            zaehler += 1</span>
+<span class="sd">    return quads</span>
+
+
+<span class="sd">def findeTiefsteZeile(spalte):</span>
+<span class="sd">    for zeile in reversed(range(ZEILEN)):</span>
+<span class="sd">        if (spalte, zeile) not in spielfeld:</span>
+<span class="sd">            return zeile</span>
+
+
+<span class="sd"># Diese Funktion überprüft, ob die eingegebene Spalte gültig ist, der Wert für die Spalte darf 0-6 sein.</span>
+<span class="sd">def spalteGueltig(spalte):</span>
+<span class="sd">    if (spalte, 0) in spielfeld:</span>
+<span class="sd">        return False</span>
+<span class="sd">    if 0 &lt;= spalte &lt; 7:</span>
+<span class="sd">        return True</span>
+
+
+<span class="sd"># Diese Funktion gibt das aktuelle Spielfeld aus. Ein &#39;.&#39; steht für ein leeres Feld, in &#39;O&#39; für einen Stein von</span>
+<span class="sd"># Spieler 1 und ein &#39;X&#39; für einen Stein von Spieler2.</span>
+<span class="sd">def printSpielfeld():</span>
+<span class="sd">    for i in range(ZELLEN):</span>
+<span class="sd">        if i % SPALTEN == 0:</span>
+<span class="sd">            print()</span>
+<span class="sd">        position = (i % SPALTEN, i // SPALTEN)</span>
+<span class="sd">        if position in spielfeld:</span>
+<span class="sd">            print(spielfeld[position], end=&#39; &#39;)</span>
+<span class="sd">        else:</span>
+<span class="sd">            print(&#39;.&#39;, end=&#39; &#39;)</span>
+<span class="sd">    print()</span>
+
+
+<span class="sd"># Diese Funktion ersetzt die Funktion gewonnen</span>
+<span class="sd">def steinSetzen(position, spieler):</span>
+<span class="sd">    sieg = False</span>
+<span class="sd">    spielfeld[position] = &#39;O&#39; if spieler else &#39;X&#39;</span>
+<span class="sd">    for i in pos2Index[position]:</span>
+<span class="sd">        quads[i][spieler] += 1</span>
+<span class="sd">        if quads[i][spieler] == 4:</span>
+<span class="sd">            sieg = True</span>
+<span class="sd">    return sieg</span>
+
+
+<span class="sd"># Diese Funktion dient der KI zum Löschen von Zügen die sie durchprobiert</span>
+<span class="sd">def steinLoeschen(position, spieler):</span>
+<span class="sd">    del spielfeld[position]</span>
+<span class="sd">    for i in pos2Index[position]:</span>
+<span class="sd">        quads[i][spieler] -= 1</span>
+
+
+<span class="sd"># Diese Funktion bewertet das Spielfeld (die gesetzen Steine)</span>
+<span class="sd">def bewerten():</span>
+<span class="sd">    score = 0</span>
+<span class="sd">    for position in spielfeld:</span>
+<span class="sd">        for i in pos2Index[position]:</span>
+<span class="sd">            gelbe, rote = quads[i]</span>
+<span class="sd">            if gelbe &gt; 0 and rote &gt; 0:</span>
+<span class="sd">                continue</span>
+<span class="sd">            score += rote * 10</span>
+<span class="sd">            score -= gelbe * 10</span>
+<span class="sd">    return score</span>
+
+
+<span class="sd"># Diese Funktion liefert alle möglichen Züge</span>
+<span class="sd">def zugliste():</span>
+<span class="sd">    zuege = []</span>
+<span class="sd">    for spalte in range(SPALTEN):</span>
+<span class="sd">        if not spalteGueltig(spalte):</span>
+<span class="sd">            continue</span>
+<span class="sd">        zeile = findeTiefsteZeile(spalte)</span>
+<span class="sd">        zuege.append((spalte, zeile))</span>
+<span class="sd">    return zuege</span>
+
+
+<span class="sd"># Diese Funktion ist für einen echten zweiten Mitspieler bestimmt</span>
+<span class="sd">def human(spieler):</span>
+<span class="sd">    while True:</span>
+<span class="sd">        spalte = int(input(&#39;In welche Spalte willst du setzen(0-6)?&#39;))</span>
+<span class="sd">        if spalteGueltig(spalte):</span>
+<span class="sd">            break</span>
+<span class="sd">    zeile = findeTiefsteZeile(spalte)</span>
+<span class="sd">    sieg = steinSetzen((spalte, zeile), spieler)</span>
+<span class="sd">    return sieg</span>
+
+
+<span class="sd"># Diese Funktion ist für die KI bestimmt, dieser nimmt den zug mit dem höchsten score</span>
+<span class="sd">def computer(spieler):</span>
+<span class="sd">    bewertete_zuege = []</span>
+<span class="sd">    for zug in zugliste():</span>
+<span class="sd">        sieg = steinSetzen(zug, spieler)</span>
+<span class="sd">        score = minimax(7, -999999, 999999, spieler, sieg)</span>
+<span class="sd">        steinLoeschen(zug, spieler)</span>
+<span class="sd">        bewertete_zuege.append((score, zug))</span>
+<span class="sd">    bewertete_zuege.sort(reverse=spieler)</span>
+<span class="sd">    score, bester_zug = bewertete_zuege[0]</span>
+<span class="sd">    sieg = steinSetzen(bester_zug, spieler)</span>
+<span class="sd">    print(bewertete_zuege)</span>
+<span class="sd">    print(f&#39;Spieler {1 if spieler else 2} setzt {bester_zug} mit der Bewertung {score}&#39;)</span>
+<span class="sd">    return sieg</span>
+
+
+<span class="sd">def minimax(tiefe, alpha, beta, spieler, sieg):</span>
+<span class="sd">    if sieg:</span>
+<span class="sd">        return 99999+tiefe if spieler else -99999-tiefe</span>
+<span class="sd">    if tiefe == 0 or len(spielfeld) == ZELLEN:</span>
+<span class="sd">        return bewerten()</span>
+<span class="sd">    spieler = not spieler</span>
+<span class="sd">    value = -999999 if spieler else 999999</span>
+<span class="sd">    for zug in zugliste():</span>
+<span class="sd">        sieg = steinSetzen(zug, spieler)</span>
+<span class="sd">        score = minimax(tiefe - 1, alpha, beta, spieler, sieg)</span>
+<span class="sd">        steinLoeschen(zug, spieler)</span>
+<span class="sd">        if spieler:</span>
+<span class="sd">            value = max(value, score)</span>
+<span class="sd">            alpha = max(value, alpha)</span>
+<span class="sd">        else:</span>
+<span class="sd">            value = min(value, score)</span>
+<span class="sd">            beta = min(value, beta)</span>
+<span class="sd">        if alpha &gt;= beta:</span>
+<span class="sd">            break</span>
+<span class="sd">    return value</span>
+
+
+<span class="sd">spieler = True</span>
+<span class="sd">quads = quadsErmitteln()</span>
+<span class="sd">while True:</span>
+<span class="sd">    printSpielfeld()</span>
+<span class="sd">    if spieler:</span>
+<span class="sd">        sieg = human(spieler)</span>
+<span class="sd">    else:</span>
+<span class="sd">        sieg = human(spieler)</span>
+<span class="sd">    if sieg:</span>
+<span class="sd">        printSpielfeld()</span>
+<span class="sd">        print(&#39;GEWONNEN!!!&#39;)</span>
+<span class="sd">        break</span>
+<span class="sd">    spieler = not spieler</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Der Ablauf des Spiels schaut folgendermaßen aus:</span>
+<span class="sd">    Zuerst wird das leere Spielfeld ausgegeben.</span>
+<span class="sd">    Danach wählt der/die erste SpielerIn eine Spalte aus in die er/sie den Stein werfen will.</span>
+<span class="sd">    Es wird überprüft, ob die Eingabe der Spalte gültig ist. (Werte von 0-6 sind erlaubt.)</span>
+<span class="sd">    Danach wird überprüft ob, der/die SpielerIn gewonnen hat. (4 Steine in eine bestimmte Richtung.)</span>
+<span class="sd">    Falls, dass nicht der Fall ist wirft der nächste Spieler einen Stein.</span>
+<span class="sd">    Es wird wieder die Gültigkeit der Spalte und ob gewonnen wurde überprüft.</span>
+<span class="sd">    Dies wird solange durchgeführt, bis ein Spieler gewonnen hat oder das Spielfeld voll mit Steinen ist.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2022, Kakici Seidler
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
