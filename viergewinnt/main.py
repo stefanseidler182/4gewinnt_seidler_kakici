@@ -11,6 +11,7 @@ parameter und return werte beschreiben
 spielfeldklasse parameter werden übergeben
 """
 
+
 class Spielfeld:
     """
     Die Klasse Spielfeld umfasst alle Informationen bezüglich des Spielfeldes.
@@ -116,7 +117,7 @@ class GUI:
     def beenden(self):
         i = 0
         while i < 1:
-            beenden = input(f'Möchtest du das Spiel aufgeben?(j/n)')
+            beenden = input(f'Möchtest du das Spiel beenden?(j/n)')
             if beenden == "j":
                 return True
             elif beenden == "n":
