@@ -21,3 +21,4 @@ Die Anleitung für diese Dokumentation ist mittels Screencast von Christian Hofe
 https://refactoring.guru/design-patterns/
 ### Unittest
 https://www.geeksforgeeks.org/unit-testing-python-unittest/?ref=lbp
+### Generieren der Sphinx-Datei
