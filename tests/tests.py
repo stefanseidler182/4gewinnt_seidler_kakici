@@ -1,19 +1,24 @@
 import unittest
-from source.main import *
-'''
-Hey Stefan! Hab game.main in viergewinnt geändert weil es das Modul game nicht findet.
-Aber das Modul viergewinnt findet es auch nicht.
+import sys
+import os
+myDir = os.getcwd()
+sys.path.append(myDir)
 
-Bereits probiert: https://stackoverflow.com/questions/62383007/python-unit-test-cannot-find-module
-'''
+from pathlib import Path
+path = Path(myDir)
+a=str(path.parent.absolute())
+
+sys.path.append(a)
+from viergewinnt.main import *
 
 
 class ViergewinntTests(unittest.TestCase):
-    def __init__(self):
-        self.spielmodus = None
-
-    def spielmodus(self):
-        self.spielmodus = Spielmodus(1)  # add assertion here
+    def setUp(self):
+        self.Spieler1 = Spielmodus(1)
+        self.Spieler2 = Spielmodus(2)
+        self.Feld1 = Spielfeld()
+        self.gui1 = GUI()
+        self.spielregeln1 = Spielregeln()
 
     def test_setFelder(self):
         """
@@ -23,7 +28,7 @@ class ViergewinntTests(unittest.TestCase):
         assertEqual() ist eine Unittest library Funktion, welche die gleichwertigkeit von 2 Werten überprüft.
         Wenn beide Werte gleichwertig sind, gibt assertEqual() True zurück, andernfalls False.
         """
-        self.Feld1.setFelder(0, "X")
+        self.Feld1.setFelder(0)
         erg1 = self.Feld1.getFelder()
         self.assertEqual(erg1, [[" ", " ", " ", " ", " ", " ", " "],
                                 [" ", " ", " ", " ", " ", " ", " "],
@@ -31,7 +36,7 @@ class ViergewinntTests(unittest.TestCase):
                                 [" ", " ", " ", " ", " ", " ", " "],
                                 [" ", " ", " ", " ", " ", " ", " "],
                                 ["X", " ", " ", " ", " ", " ", " "]])
-        self.Feld1.setFelder(0, "X")
+        self.Feld1.setFelder(0)
         erg2 = self.Feld1.getFelder()
         self.assertEqual(erg2, [[" ", " ", " ", " ", " ", " ", " "],
                                 [" ", " ", " ", " ", " ", " ", " "],
@@ -39,9 +44,9 @@ class ViergewinntTests(unittest.TestCase):
                                 [" ", " ", " ", " ", " ", " ", " "],
                                 ["X", " ", " ", " ", " ", " ", " "],
                                 ["X", " ", " ", " ", " ", " ", " "]])
-        self.Feld1.setFelder(0, "O")
-        self.Feld1.setFelder(0, "O")
-        self.Feld1.setFelder(0, "O")
+        self.Feld1.setFelder(0)
+        self.Feld1.setFelder(0)
+        self.Feld1.setFelder(0)
         erg3 = self.Feld1.getFelder()
         self.assertEqual(erg3, [[" ", " ", " ", " ", " ", " ", " "],
                                 ["O", " ", " ", " ", " ", " ", " "],
@@ -49,7 +54,7 @@ class ViergewinntTests(unittest.TestCase):
                                 ["O", " ", " ", " ", " ", " ", " "],
                                 ["X", " ", " ", " ", " ", " ", " "],
                                 ["X", " ", " ", " ", " ", " ", " "]])
-        self.Feld1.setFelder(0, "O")
+        self.Feld1.setFelder(0)
         erg4 = self.Feld1.getFelder()
         self.assertEqual(erg4, [["O", " ", " ", " ", " ", " ", " "],
                                 ["O", " ", " ", " ", " ", " ", " "],
@@ -68,7 +73,7 @@ def test_Spielzug(self):
     Diese Funktion wird je nach Bedingung einen boolean zurückliefern. Falls der test Wert True ist,
     dann gibt assertTrue() den Wert True zurück, andernfalls False.
     """
-    self.Feld1.setFelder(1, "X")
+    self.Feld1.setFelder(1)
     # self.gui1.printSpielfeld(self.Feld1)
     self.assertTrue(self.spielregeln1.Spielzug(self.Feld1, 1))
     self.Feld1.setFelder(1, "X")
