@@ -1,0 +1,245 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Software Design Patterns &mdash; 4Gewinnt 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="viergewinnt" href="modules.html" />
+    <link rel="prev" title="KI" href="ki.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> 4Gewinnt
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="allgemein.html">Überschrift 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="design.html">Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test.html">Test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ki.html">KI</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Software Design Patterns</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#was-sind-software-design-patterns">Was sind Software Design Patterns?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#behavioural-patterns">Behavioural Patterns</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">viergewinnt</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">4Gewinnt</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Software Design Patterns</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pattern.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="software-design-patterns">
+<h1>Software Design Patterns<a class="headerlink" href="#software-design-patterns" title="Permalink to this headline">¶</a></h1>
+<section id="was-sind-software-design-patterns">
+<h2>Was sind Software Design Patterns?<a class="headerlink" href="#was-sind-software-design-patterns" title="Permalink to this headline">¶</a></h2>
+<p>Software Design Patterns (Entwurfsmuster) dienen als Templates bzw. Musterlösungen für Probleme,
+die in der Softwareentwicklung immer wieder auftreten. Ziel ist es eine schnelle und effiziente
+Arbeitsweise zu schaffen, sowie dem Code eine Struktur zu geben, damit Außenstehende die Funktion
+eines Codes schneller erkennen können. Es wird zwischen drei Klassen unterschieden, abhängig von
+der Problematik der Situation: Creational Patterns, Structural Patterns sowie Behavioural Patterns.</p>
+</section>
+<section id="behavioural-patterns">
+<h2>Behavioural Patterns<a class="headerlink" href="#behavioural-patterns" title="Permalink to this headline">¶</a></h2>
+<p>Wir haben uns dazu entschieden auf das Behavioural Patterns, zu Deutsch Verhaltensmuster, näher
+einzugehen. Verhaltensmuster sind Muster, welche komplexes Verhalten von Code kapseln. Ziel ist es
+für Außenstehende eine simple und übersichtliche Struktur zu erschaffen. Ein passendes Beispiel hierfür
+wäre Google Maps. Die App berechnet die Route von A nach B. Dabei muss der Faktor des Fortbewegungsmittels
+in Betracht gezogen werden - es mach einen Unterschied ob man zu Fuß, mit dem Auto oder mit dem Fahrrad
+unterwegs ist. Erst zur Laufzeit entscheidet das Strategy Pattern welcher Algorithmus benötigt wird. Was
+bei diesem Beispiel auffällt, ist, dass die Routenberechnung eigentlich gleichbleibt. Den Unterschied
+macht die Wahl des Fortbewegungsmittels aus. Die Vereinfachung und Kapselung der Komplexität nach außen ist
+Zweck des Strategy Patterns. Der große Vorteil hierbei ist, dass man neue Strategien implementieren kann,
+ihne den Kontext zu ändern. Bezogen auf unser Beispiel ist es auch ein Vorteil, dass man Algorithmen innerhalb
+eines Objektes in Laufzeit wechseln kann. Die Vorteile des Strategy Pattern können sich jedoch auch in
+Nachteile umwandeln, wenn man nur wenige Algorithmen hat, welche selten wechseln
+(Merke: Entwurfsmuster dienen zur Vereinfachung, Übersichtlichkeit und Stabilität!)</p>
+<p><img alt="Bild zur Visualisierung des Strategy Pattern" src="_images/strategy-pattern.jpg" /></p>
+<p>Die Grafik visualisiert die Funktion des Strategy Patterns (Kontext = Objekt; Strategie = abgekapselter Algorithmus).
+Es ist ersichtlich, dass der Kontext nicht abhängig von einer Implementierung ist, daher können unterschiedliche Verhalten
+zugewiesen werden, ohne dass ein Code geändert werden muss. Zusammenfassend kann man
+sagen, dass das Verhalten unabhängig vom Kontext wird. Der Kontext selbsst wird unabhängig
+von einer Implementierung.</p>
+</section>
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="modules.html" class="btn btn-neutral float-right" title="viergewinnt" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ki.html" class="btn btn-neutral float-left" title="KI" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2022, Kakici Seidler
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
