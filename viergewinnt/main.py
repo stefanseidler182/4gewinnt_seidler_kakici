@@ -23,6 +23,10 @@ class Spielfeld:
     def getFelder(self) -> List:
         """
         übermittelt das Spielfeld
+
+        Returns
+        -------
+        List [List] - self.__felder
         """
         return self.__felder
 
@@ -32,9 +36,10 @@ class Spielfeld:
         Ziel der Funktion ist es, dass der gespielte Stein bis zum
         letztmöglichen Punkt fällt, und nicht z.B. in der ersten Zeile hängen bleibt.
         ________________________________________
-
+        Parameter:
+        ----------------------------------------
         spalte: int
-            Gibt die Spalte die vom Spieler ausgewählt wurde, um den Stein zu setzen
+            Gibt die Spalte an, die vom Spieler ausgewählt wurde, um den Stein zu setzen
         """
         self.__letzteSpalte = spalte
         geworfen = False
@@ -58,6 +63,10 @@ class Spielfeld:
         """
         Gibt jene Reihe an, die zuletzt im Spiel bespielt wurde.
         Die Zählung fängt bei 0 von der obersten Reihe an
+
+        Returns
+        -------
+        int: self.__letzteReihe
         """
         return self.__letzteReihe
 
@@ -65,6 +74,10 @@ class Spielfeld:
         """
         Gibt jene Spalte an, die zuletzt im Spiel bespielt wurde.
         Die Zählung fängt bei 0 von links an
+
+        Returns
+        -------
+        int: self.__letzteSpalte
         """
         return self.__letzteSpalte
 
@@ -76,11 +89,16 @@ class GUI:
     """
 
     def __init__(self):
-        self.spieler = 0
+        self.spieler = 0 # Die Variable Spieler dient dazu, die Spieler, Spieler 1 und 2 zu benennen.
 
     def printSpielfeld(self, feld: Spielfeld):
         """
-        Gibt das Spielfeld aus
+        Gibt das Spielfeld aus.
+        ________________________________________
+        Parameter:
+        ----------------------------------------
+        feld: Spielfeld
+            Übergibt das aktuelle Spielfeld.
         """
         for liste in feld.getFelder():
             print(liste[0], liste[1], liste[2], liste[3], liste[4], liste[5], liste[6])
@@ -90,6 +108,11 @@ class GUI:
         Die Funktion fordert vom Spieler eine Eingabe.
         Je nach Eingabe wird ein von zwei Spielmodi ausgewählt.
         Die Aufforderung wird so lange wiederholt, bis die Eingabe valide ist. (Parameter 1 oder 2)
+        ________________________________________
+        Returns:
+        ----------------------------------------
+        int:
+            Gibt den Spielmodus des jeweiligen Spielers zurück.
         """
         gueltigeModi = [1, 2]
         spielmodus = 0
@@ -104,7 +127,10 @@ class GUI:
                 print(f'FALSCHE EINGABE! Bist du ein Mensch(1) oder ein Computer(2)')
         return spielmodus
 
-    def beenden(self):
+    def beenden(self) -> bool:
+        """
+        Beschreibung fehlt
+        """
         i = 0
         while i < 1:
             beenden = input(f'Möchtest du das Spiel beenden?(j/n)')
@@ -116,7 +142,7 @@ class GUI:
                 print(f'FALSCHE EINGABE! Gib "j"(beenden) oder "n"(weiterspielen) ein!')
                 continue
 
-    def erfasseSpielzug(self):
+    def erfasseSpielzug(self) -> int:
         """
         Die Funktion erfasst den eingegebenen Spielzug und überprüft dabei,
         ob es ein gültiger Spielzug ist. Falls der Spielzug nicht gültig ist,
@@ -185,8 +211,20 @@ class Spielregeln:
     def volleSpalte(self, feld: Spielfeld, spalte: int) -> bool:
         """
         Die Funktion überprüft, ob der jeweilige Spielzug des Spielers gültig ist.
-        Falls eine Spalte bereits voll ist, wird der Spieler zu einer erneuten Eingabe
-        aufgefordert.
+        Falls die Spalte, in die der Spieler den Stein werden will, voll ist,
+        wird der Spieler zu einer erneuten Eingabe aufgefordert.
+        ----------------------------
+        Parameter:
+        ----------------------------
+        feld:
+            Das aktuelle Spielfeld wird übergeben.
+        spalte:
+            Die Spalte in die, der Stein geworfen wird, wird übergeben.
+        ----------------------------
+        Returns:
+        ----------------------------
+        bool:
+            Gibt False zurück, wenn die Spalte voll ist, ansonsten True.
         """
         spielfeld = feld.getFelder()
         if spielfeld[0][spalte] != ".":
@@ -197,7 +235,24 @@ class Spielregeln:
 
     def voll(self, feld: Spielfeld) -> bool:
         """
-        Diese Funktion überprüft nach jedem Spielzug, ob das Spielfeld voll ist. Zuerst ...
+        Diese Funktion überprüft nach jedem Spielzug, ob das Spielfeld voll ist.
+        Die Schleife überprüft vom Feld[0][0] (Feld links oben) bis zum Feld [0][5], ob
+        ein Punkt auf dem Feld ist. Sobald dies der Fall ist, wird False returniert.
+
+        Danach folgt eine eigene Abfrage für das Feld[0][6]. Sollte dies ein Punkt sein,
+        wird False retourniert, ansonsten True.
+
+        ----------------------------
+        Parameter:
+        ----------------------------
+        feld:
+            Das aktuelle Spielfeld wird übergeben.
+        ----------------------------
+        Returns:
+        ----------------------------
+        bool:
+            Gibt False zurück, wenn das Spielfeld voll ist, ansonsten True.
+
         """
         spielfeld = feld.getFelder()
         for i in range(6):
@@ -213,12 +268,33 @@ class Spielregeln:
     def gewonnen(self, feld: Spielfeld) -> bool:
         """
         Die Funktion überprüft ob einer der Spieler das Spiel gewonnen hat.
-        Die Funktion ruft das Spielfeld sowie die Zeile und Spalte des zuletzt geworfenen
-        Spielsteins ab. Die erste Schleife überprüft in alle 8 Richtungen. Zuerst wird, die Annahme getroffen, dass
-        der Spieler gewonnen hat, Die erste if-Bedingung überprüft, ob die Zeilen- bzw. Spaltenposition im
-        Spielfeld sind. Die zweite if-Bedingung überprüft, ob 4 Steine in eine bestimmte Richtung im Spielfeld sind.
-        Wenn der vierte Stein True ist, hat der Spieler gewonnen, ansonsten bricht die Schleife ab und setzt den Wert
-        von vier_in_einer-reihe auf False und das Spiel geht weiter.
+        Die Funktion ruft das Spielfeld sowie die Zeile und Spalte des zuletzt geworfenen Spielsteins ab.
+        Die erste Schleife überprüft in alle 8 Richtungen. Zuerst wird, die Annahme getroffen, dass
+        der Spieler gewonnen hat. Die zweite Schleife überprüft, für die jeweilige Richtung, ob 4 Steine in dieser
+        Richtung im Spielfeld sind. Es wird jeweils eine neue Spalten- bzw. Zeilenposition ermittelt. Danach wird
+        überprüft, ob die ermittelten Positionen sich im Spielfeld befinden. Falls das nicht der Fall ist,
+        folgt ein break.
+        Danach wird überprüft, ob schon 3 Steine in eine Richtung gefunden wurden.
+        Sollte dies der Fall sein, werden neue Spalten- bzw. Zeilenpositionen ermittelt, die von der geworfenen
+        Position in die Gegenrichtung zeigen. Dies dient dazu, falls der zuletzt geworfene Stein nicht am Ende
+        vier in einer Richtung bildet, sondern auf einer mittleren Position eingeworfen wird. Sollte sich die
+        ermittelte Position außerhalb des Spielfelds befinden, wird überprüft, ob in die andere Richtung gewonnen
+        wurde.
+        Sind noch keine 3 Steine in eine Richtung gefunden, wird überprüft, ob weitere Steine in die jeweilige
+        Richtung vorhanden sind. Sobald alle Richtungen überprüft wurden, bricht die Schleife ab, und setzt
+        den Wert von vier_in_einer_reihe auf False.
+        Außerhalb der zweiten Schleife, wird am Ende überprüft, ob der Wert von vier_in_einer_reihe True ist.
+
+        ----------------------------
+        Parameter:
+        ----------------------------
+        feld:
+            Das aktuelle Spielfeld wird übergeben.
+        ----------------------------
+        Returns:
+        ----------------------------
+        bool:
+            Gibt False zurück, wenn das der nicht Spieler keine vier Steine in eine Richtung hat, ansonsten True.
 
         """
         spielfeld = feld.getFelder()
@@ -234,6 +310,19 @@ class Spielregeln:
                     j += 1
                     vier_in_einer_reihe = False
                     break
+                if j == 3:
+                    spaltenposition_2 = spalte + self.richtungen[i][0] * -1
+                    zeilenposition_2 = zeile + self.richtungen[i][1] * -1
+                    if zeilenposition_2 > 5 or zeilenposition_2 < 0 or spaltenposition_2 > 6 or spaltenposition_2 < 0:
+                        if spielfeld[zeile][spalte] == spielfeld[zeilenposition][spaltenposition]:
+                            j += 1
+                            continue
+                        else:
+                            vier_in_einer_reihe = False
+                            break
+                    if spielfeld[zeile][spalte] == spielfeld[zeilenposition_2][spaltenposition_2]:
+                        j += 1
+                        continue
                 if spielfeld[zeile][spalte] == spielfeld[zeilenposition][spaltenposition]:
                     j += 1
                     continue
@@ -254,6 +343,9 @@ class DasSpiel:
     """
 
     def __init__(self):
+        """
+        Kommentar
+        """
         self.__feld = Spielfeld()
         self.__gui = GUI()
         self.__spielregeln = Spielregeln()
@@ -261,6 +353,9 @@ class DasSpiel:
         self.spieler2 = Spielmodus(2)
 
     def spielStart(self):
+        """
+        Kommentar
+        """
         spielmodus_spieler1 = self.__gui.getSpielmodus()
         self.spieler1.spielmodus = spielmodus_spieler1
         spielmodus_spieler2 = self.__gui.getSpielmodus()

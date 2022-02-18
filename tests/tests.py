@@ -82,27 +82,57 @@ class ViergewinntTests(unittest.TestCase):
         außerhalb einer range von 1-7 auswählt
         '''
 
-    def test_Spielzug(self):
-        """
-        Überprüft, ob ein Zug möglich ist.
-        _________________________________
 
-        assertTrue() ist eine weitere Unittest library Funktion, welche den test Wert mit True vergleicht.
-        Diese Funktion wird je nach Bedingung einen boolean zurückliefern. Falls der test Wert True ist,
-        dann gibt assertTrue() den Wert True zurück, andernfalls False.
-        """
-
-    def test_gewonnen(self):
+    def test_gewonnen_vertikal(self):
         """
         Überprüft die Funktion gewonnen. Spieler 1 wirft immer in Spalte 1 und Spieler 2 wirft immer in Spalte 2.
         """
-        for i in range(7):
-            self.spielfeld.setFelder(1)
-            self.spielfeld.setFelder(2)
+        self.spielfeld.setFelder(1)
+        self.spielfeld.setFelder(2)
+        self.spielfeld.setFelder(1)
+        self.spielfeld.setFelder(2)
+        self.spielfeld.setFelder(1)
+        self.spielfeld.setFelder(2)
+        self.spielfeld.setFelder(1)
         self.assertEqual(self.spielregeln1.gewonnen(self.spielfeld), True)
-        for i in range(6):
-            self.spielfeld.setFelder(1)
-            self.spielfeld.setFelder(2)
+
+    def test_gewonnen_horizontal(self):
+
+        self.spielfeld.setFelder(1)
+        self.spielfeld.setFelder(1)
+        self.spielfeld.setFelder(2)
+        self.spielfeld.setFelder(2)
+        self.spielfeld.setFelder(3)
+        self.spielfeld.setFelder(3)
+        self.spielfeld.setFelder(4)
+        self.assertEqual(self.spielregeln1.gewonnen(self.spielfeld), True)
+
+    def test_gewonnen_diagonal_links_oben(self):
+        self.spielfeld.setFelder(4)
+        self.spielfeld.setFelder(4)
+        self.spielfeld.setFelder(3)
+        self.spielfeld.setFelder(5)
+        self.spielfeld.setFelder(5)
+        self.spielfeld.setFelder(3)
+        self.spielfeld.setFelder(5)
+        self.spielfeld.setFelder(3)
+        self.spielfeld.setFelder(2)
+        self.spielfeld.setFelder(2)
+        self.spielfeld.setFelder(2)
+        self.spielfeld.setFelder(2)
+        self.assertEqual(self.spielregeln1.gewonnen(self.spielfeld), True)
+
+    def test_gewonnen_diagonal_rechts_oben(self):
+        self.spielfeld.setFelder(4)
+        self.spielfeld.setFelder(4)
+        self.spielfeld.setFelder(5)
+        self.spielfeld.setFelder(3)
+        self.spielfeld.setFelder(5)
+        self.spielfeld.setFelder(5)
+        self.spielfeld.setFelder(6)
+        self.spielfeld.setFelder(6)
+        self.spielfeld.setFelder(6)
+        self.spielfeld.setFelder(6)
         self.assertEqual(self.spielregeln1.gewonnen(self.spielfeld), True)
 
     def test_printSpielfeld(self):
@@ -118,9 +148,9 @@ class ViergewinntTests(unittest.TestCase):
                          '. . . . . . .\n', capturedoutput.getvalue())
 
     def test_voll(self):
-        '''
-        Überprüft ob das Spielfeld voll ist.
-        '''
+        """
+        Überprüft, ob das Spielfeld voll ist.
+        """
         self.assertFalse(self.spielregeln1.voll(self.spielfeld))
         for _ in self.spielfeld.getFelder():
             for i in range(0, 7):
@@ -129,7 +159,9 @@ class ViergewinntTests(unittest.TestCase):
         self.assertTrue(self.spielregeln1.voll(self.spielfeld))
 
     def test_spielstart(self):
-        global ZAEHLER
+        """
+        Die Funktion simuliert das Spiel von 2 Computerspielern.
+        """
         spielmodus_spieler1 = 2
         self.Spieler1.spielmodus = spielmodus_spieler1
         spielmodus_spieler2 = 2
@@ -139,7 +171,6 @@ class ViergewinntTests(unittest.TestCase):
             ueberpruefe_spielzug_spieler1 = False
             spielzug_spieler_1 = None
             if spielmodus_spieler1 == 1:
-
                 beenden = self.gui1.beenden()
                 if beenden:
                     print("Spieler 2 hat gewonnen!")
