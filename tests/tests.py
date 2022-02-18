@@ -147,16 +147,15 @@ class ViergewinntTests(unittest.TestCase):
         """
         Testet die printSpielfeld-Funktion anhand eines leeren Spielfelds.
         """
-        capturedoutput = io.StringIO()
-        sys.stdout = capturedoutput
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
         self.gui1.printSpielfeld(self.spielfeld)
-        sys.stdout = sys.__stdout__
         self.assertEqual('. . . . . . .\n'
                          '. . . . . . .\n'
                          '. . . . . . .\n'
                          '. . . . . . .\n'
                          '. . . . . . .\n'
-                         '. . . . . . .\n', capturedoutput.getvalue())
+                         '. . . . . . .\n', capturedOutput.getvalue())
 
     def test_voll(self):
         """
