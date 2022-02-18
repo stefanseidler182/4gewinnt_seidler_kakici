@@ -1,7 +1,4 @@
 # Design
-Beschreiben Sie Ihre Implementierung – warum Sie den Code wie aufgeteilt haben. Wie
-sie gewissen Entscheidungen getroffen haben bzw. Ihre Gründe/Argumente dazu. (z.B.: Welche
-Eingaben, wie Spielfeld gespeichert, wie überprüft ob Spiel zu Ende, ...)
 
 Die erste Überlegung war es, uns die notwendigen Klassen für eine Implementierung
 der Spielregeln, des Spielfeldes, der zwei Spielmodi, einem User Interface sowie 

@@ -1,4 +1,5 @@
 # Test
+
 Überprüft wurden die Funktionen der Klassen Spielfeld, GUI, Spielmodus sowie Spielregeln.
 Der erste Test namens test_Spielmodus überprüft ob der Spieler eine gültige Auswahl 
 zu Beginn des Spiels trifft. Wählt man etwas anderes als 1 oder 2 aus, bekommt man einen
