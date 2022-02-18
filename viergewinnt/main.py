@@ -353,8 +353,8 @@ class DasSpiel:
     In der init Funktion wird das Spielfeld, das GUI, die Spielregeln sowie die Spielmodi
     initialisiert. Zuerst wird abgefragt, ob die Spieler Mensch oder Computer sind. In der spielStart-Funktion wird
     überprüft, ob das Spielfeld voll ist. Wenn das Spielfeld voll ist, wird Unentschieden ausgegeben. Nach jedem Zug
-    wird ein menschlicher Spieler gefragt, ob er/sie aufgeben will(beenden). Nach jedem geworfenen Stein, wird überprüft,
-    ob der Spieler gewonnen hat und das aktuelle Spielfeld wird ausgegeben.
+    wird ein menschlicher Spieler gefragt, ob er/sie aufgeben will(beenden). Nach jedem geworfenen Stein,
+    wird überprüft, ob der Spieler gewonnen hat und das aktuelle Spielfeld wird ausgegeben.
     """
 
     def __init__(self):
