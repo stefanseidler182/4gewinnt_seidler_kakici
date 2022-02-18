@@ -160,13 +160,14 @@ class ViergewinntTests(unittest.TestCase):
 
     def test_spielstart(self):
         """
-        Die Funktion simuliert das Spiel von 2 Computerspielern.
+        Die Funktion simuliert das Spiel von 2 Computerspielern, ohne das Spielfeld auszugeben.
+        Je öfter man es simuliert, desto mehr Fehler können gefunden werden.
         """
         spielmodus_spieler1 = 2
         self.Spieler1.spielmodus = spielmodus_spieler1
         spielmodus_spieler2 = 2
         self.Spieler2.spielmodus = spielmodus_spieler2
-        self.gui1.printSpielfeld(self.spielfeld)
+        #self.gui1.printSpielfeld(self.spielfeld)
         while True:
             ueberpruefe_spielzug_spieler1 = False
             spielzug_spieler_1 = None
@@ -180,12 +181,12 @@ class ViergewinntTests(unittest.TestCase):
                 ueberpruefe_spielzug_spieler1 = self.spielregeln1.volleSpalte(self.spielfeld, spielzug_spieler_1)
 
             self.spielfeld.setFelder(spielzug_spieler_1)
-            self.gui1.printSpielfeld(self.spielfeld)
+            #self.gui1.printSpielfeld(self.spielfeld)
             if self.spielregeln1.voll(self.spielfeld):
                 print("Das Spielfeld ist voll. UNENTSCHIEDEN!")
                 break
             if self.spielregeln1.gewonnen(self.spielfeld):
-                print("Spieler 1 hat gewonnen!")
+                #print("Spieler 1 hat gewonnen!")
                 break
 
             ueberpruefe_spielzug_spieler2 = False
@@ -200,12 +201,12 @@ class ViergewinntTests(unittest.TestCase):
                 ueberpruefe_spielzug_spieler2 = self.spielregeln1.volleSpalte(self.spielfeld, spielzug_spieler_2)
 
             self.spielfeld.setFelder(spielzug_spieler_2)
-            self.gui1.printSpielfeld(self.spielfeld)
+            #self.gui1.printSpielfeld(self.spielfeld)
             if self.spielregeln1.voll(self.spielfeld):
                 print("Das Spielfeld ist voll. UNENTSCHIEDEN!")
                 break
             if self.spielregeln1.gewonnen(self.spielfeld):
-                print("Spieler 2 hat gewonnen!")
+                #print("Spieler 2 hat gewonnen!")
                 break
 
 

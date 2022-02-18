@@ -89,7 +89,7 @@ class GUI:
     """
 
     def __init__(self):
-        self.spieler = 0 # Die Variable Spieler dient dazu, die Spieler, Spieler 1 und 2 zu benennen.
+        self.spieler = 0  # Die Variable Spieler dient dazu, die Spieler, Spieler 1 und 2 zu benennen.
 
     def printSpielfeld(self, feld: Spielfeld):
         """
@@ -130,9 +130,13 @@ class GUI:
     def beenden(self) -> bool:
         """
         Die Funktion dient zum frühzeitigen Abbruch des Spiels und ermöglicht dem Spieler somit
-        das Spiel jederzeit beenden zu können. i = 0 ist eine Endlosschleife, somit wird nach jedem
+        das Spiel jederzeit beenden zu können. while i < 1 mit i = 0 ist eine Endlosschleife, somit wird nach jedem
         Zug ein input benötigt (j oder n). Durch diesen input bricht man aus der Schleife raus. Die
         else Bedingung trifft nur im Falle einer ungültigen Eingabe des Spielers zu.
+        Returns:
+        ----------------------------------------
+        bool:
+            Gibt True für Beenden und False für Weiterspielen zurück.
         """
         i = 0
         while i < 1:
@@ -150,6 +154,10 @@ class GUI:
         Die Funktion erfasst den eingegebenen Spielzug und überprüft dabei,
         ob es ein gültiger Spielzug ist. Falls der Spielzug nicht gültig ist,
         wird der Spieler zu einer erneuten Eingabe aufgefordert.
+        Returns:
+        ----------------------------------------
+        int:
+            Gibt den Spaltenwert - 1 zurück, da die Array-indizes von 0 bis 6 gehen und wir 1 bis 7 eingeben.
         """
         spalte = 0
         gueltige_spalten = [1, 2, 3, 4, 5, 6, 7]
@@ -167,7 +175,7 @@ class GUI:
 
 class Spielmodus:
     """
-    Die Klasse Spielmodus umfasst alle Informationen bezüglich dem Spielmodus
+    Die Klasse Spielmodus umfasst alle Informationen bezüglich des Spielmodus
     """
 
     def __init__(self, spielmodus: int):
@@ -194,6 +202,10 @@ class Spielmodus:
         """
         Die Funktion Spielzug ruft für einen menschlichen Spieler, die Methode erfasse Spielzug auf.
         Für einen Computerspieler wird eine zufällige Spalte zwischen 0 und 6 ermittelt.
+        Returns:
+        ----------------------------------------
+        int:
+            Gibt den Spaltenwert, in den der Stein geworfen wird, zurück.
         """
         if self.__spielmodus == 1:
             spalte = gui.erfasseSpielzug()
@@ -347,7 +359,7 @@ class DasSpiel:
 
     def __init__(self):
         """
-        Initialisiert das Spielfeld, die GUI, Spielregeln sowie Spielmodi
+        Initialisiert das Spielfeld, die GUI, die Spielregeln sowie die Spielmodi der Spieler.
         """
         self.__feld = Spielfeld()
         self.__gui = GUI()
@@ -358,11 +370,12 @@ class DasSpiel:
     def spielStart(self):
         """
         Zunächst werden die Spielmodi festgelegt (ob gegen Computer oder gegen Mensch).
-        In der while True Schleife wird die beenden Funktion nur dann ausgeführt, wenn der
-        Gegenspieler ein Mensch ist (Spielmodus 1). Wenn Spieler 1 das Spiel beendet, gewinnt
-        Spieler 2. Danach wird der Spielzug überprüft. Wenn dieser False ist, dann setzt die Funktion
-        den Stein (setFelder), danach wird das Spielfeld ausgegeben. Schließlich wird das Spielfeld
-        überprüft ob es voll ist. (Funktionen sind oben bereits beschrieben)
+        In der while True Schleife wird die beenden-Funktion nur dann ausgeführt, wenn der
+        Spieler ein Mensch ist (Spielmodus 1). Wenn Spieler 1 das Spiel beendet, gewinnt
+        Spieler 2. Danach wird der Spielzug abgefragt und überprüft. Der Spielzug ist dann gültig, wenn
+        er nicht in eine Spalte geht, die voll ist. Danach wird der Spielzug durchgeführt und das Spielfeld
+        ausgegeben. Anschließend wird überprüft, ob das Spielfeld voll ist und, ob der Spieler gewonnen hat.
+        Dieselben Schritte werden beim Spieler 2 gemacht.
         """
 
         spielmodus_spieler1 = self.__gui.getSpielmodus()
