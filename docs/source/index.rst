@@ -10,6 +10,11 @@ Welcome to Vier Gewinnt's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   design
+   ki
+   pattern
+   test
+   modules
 
 
 Indices and tables

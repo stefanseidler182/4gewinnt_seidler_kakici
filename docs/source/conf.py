@@ -55,6 +55,6 @@ html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
 
 # which parser is used for file ending
-source_suffix = {'.rst': 'restructuredText',
+source_suffix = {'.rst': 'restructuredtext',
                  '.txt': 'markdown',
                  '.md': 'markdown'}
