@@ -33,7 +33,7 @@ class ViergewinntTests(unittest.TestCase):
         Überprüft, ob Spielsteine korrekt gesetzt werden.
         ________________________________________________
 
-        assertEqual() ist eine Unittest library Funktion, welche die gleichwertigkeit von 2 Werten überprüft.
+        assertEqual() ist eine Unittest library Funktion, welche die Gleichwertigkeit von 2 Werten überprüft.
         Wenn beide Werte gleichwertig sind, gibt assertEqual() True zurück, andernfalls False.
         """
         self.spielfeld.setFelder(0)
@@ -77,6 +77,10 @@ class ViergewinntTests(unittest.TestCase):
 
     def test_gueltige_Spalte(self):
         self.assertRaises(IndexError, self.spielfeld.setFelder, 8)
+        '''
+        Überprüft ob ein IndexError angezeigt wird, wenn der Spieler eine Spalte
+        außerhalb einer range von 1-7 auswählt
+        '''
 
     def test_Spielzug(self):
         """
@@ -114,6 +118,9 @@ class ViergewinntTests(unittest.TestCase):
                          '. . . . . . .\n', capturedoutput.getvalue())
 
     def test_voll(self):
+        '''
+        Überprüft ob das Spielfeld voll ist.
+        '''
         self.assertFalse(self.spielregeln1.voll(self.spielfeld))
         for _ in self.spielfeld.getFelder():
             for i in range(0, 7):
