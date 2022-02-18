@@ -129,7 +129,10 @@ class GUI:
 
     def beenden(self) -> bool:
         """
-        Beschreibung fehlt
+        Die Funktion dient zum frühzeitigen Abbruch des Spiels und ermöglicht dem Spieler somit
+        das Spiel jederzeit beenden zu können. i = 0 ist eine Endlosschleife, somit wird nach jedem
+        Zug ein input benötigt (j oder n). Durch diesen input bricht man aus der Schleife raus. Die
+        else Bedingung trifft nur im Falle einer ungültigen Eingabe des Spielers zu.
         """
         i = 0
         while i < 1:
@@ -344,7 +347,7 @@ class DasSpiel:
 
     def __init__(self):
         """
-        Kommentar
+        Initialisiert das Spielfeld, die GUI, Spielregeln sowie Spielmodi
         """
         self.__feld = Spielfeld()
         self.__gui = GUI()
@@ -354,8 +357,14 @@ class DasSpiel:
 
     def spielStart(self):
         """
-        Kommentar
+        Zunächst werden die Spielmodi festgelegt (ob gegen Computer oder gegen Mensch).
+        In der while True Schleife wird die beenden Funktion nur dann ausgeführt, wenn der
+        Gegenspieler ein Mensch ist (Spielmodus 1). Wenn Spieler 1 das Spiel beendet, gewinnt
+        Spieler 2. Danach wird der Spielzug überprüft. Wenn dieser False ist, dann setzt die Funktion
+        den Stein (setFelder), danach wird das Spielfeld ausgegeben. Schließlich wird das Spielfeld
+        überprüft ob es voll ist. (Funktionen sind oben bereits beschrieben)
         """
+
         spielmodus_spieler1 = self.__gui.getSpielmodus()
         self.spieler1.spielmodus = spielmodus_spieler1
         spielmodus_spieler2 = self.__gui.getSpielmodus()
