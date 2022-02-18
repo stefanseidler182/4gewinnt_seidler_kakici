@@ -85,7 +85,7 @@ class ViergewinntTests(unittest.TestCase):
 
     def test_gewonnen_vertikal(self):
         """
-        Überprüft die Funktion gewonnen. Spieler 1 wirft immer in Spalte 1 und Spieler 2 wirft immer in Spalte 2.
+        Überprüft die Funktion gewonnen nach 4 vertikalen Steinen.
         """
         self.spielfeld.setFelder(1)
         self.spielfeld.setFelder(2)
@@ -97,7 +97,9 @@ class ViergewinntTests(unittest.TestCase):
         self.assertEqual(self.spielregeln1.gewonnen(self.spielfeld), True)
 
     def test_gewonnen_horizontal(self):
-
+        """
+        Überprüft die Funktion gewonnen nach 4 horizontalen Steinen.
+        """
         self.spielfeld.setFelder(1)
         self.spielfeld.setFelder(1)
         self.spielfeld.setFelder(2)
@@ -108,6 +110,9 @@ class ViergewinntTests(unittest.TestCase):
         self.assertEqual(self.spielregeln1.gewonnen(self.spielfeld), True)
 
     def test_gewonnen_diagonal_links_oben(self):
+        """
+        Überprüft die Funktion gewonnen nach 4 Steinen diagonal von links oben nach rechts unten.
+        """
         self.spielfeld.setFelder(4)
         self.spielfeld.setFelder(4)
         self.spielfeld.setFelder(3)
@@ -123,6 +128,9 @@ class ViergewinntTests(unittest.TestCase):
         self.assertEqual(self.spielregeln1.gewonnen(self.spielfeld), True)
 
     def test_gewonnen_diagonal_rechts_oben(self):
+        """
+        Überprüft die Funktion gewonnen nach 4 Steinen diagonal von rechts oben nach links unten.
+        """
         self.spielfeld.setFelder(4)
         self.spielfeld.setFelder(4)
         self.spielfeld.setFelder(5)
@@ -136,6 +144,9 @@ class ViergewinntTests(unittest.TestCase):
         self.assertEqual(self.spielregeln1.gewonnen(self.spielfeld), True)
 
     def test_printSpielfeld(self):
+        """
+        Testet die printSpielfeld-Funktion anhand eines leeren Spielfelds.
+        """
         capturedoutput = io.StringIO()
         sys.stdout = capturedoutput
         self.gui1.printSpielfeld(self.spielfeld)
