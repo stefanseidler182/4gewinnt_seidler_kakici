@@ -14,7 +14,7 @@ ob er gegen einen menschlichen Mitspieler, oder gegen den Computer spielen will.
 Spielzug wird zunächst abgefragt, ob der Spieler das Spiel vorzeitig beenden möchte. Dies
 hat zur Folge, dass der Gegenspieler automatisch gewinnt. Falls sich der Spieler dazu entscheidet
 weiterzuspielen, wird er gefragt, in welcher Reihe er den Spielstein setzen möchte. Alle Eingaben,
-welche sich außerhalb des Spielfeldes befinden würden, haben eine Warnung zur Folge. Werden 4 gleiche
+welche sich außerhalb des Spielfeldes befinden, haben eine Warnung zur Folge. Werden 4 gleiche
 Steine horizontal, vertikal oder diagonal gelegt, gewinnt derjenige Spieler bzw. der Computer. Da 
 auch die Möglichkeit eines Unentschieden nicht ausgeschlossen werden kann, wurde dies in die
 Funktion spielStart implementiert.
